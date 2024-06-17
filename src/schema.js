@@ -4,6 +4,7 @@ import {
   text,
   integer,
   boolean,
+  timestamp,
   primaryKey,
   json,
 } from "drizzle-orm/pg-core";
@@ -16,8 +17,8 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   role: text("role").default("user"),
   subscribed_to: json("subscribed_to").default([]),
-  created_at: text("created_at").default("now()"),
-  updated_at: text("updated_at").default("now()"),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
 });
 
 export const subjects = pgTable("subjects", {
@@ -28,8 +29,8 @@ export const subjects = pgTable("subjects", {
   created_by: integer("created_by").references(() => users.id, {
     onDelete: "no action",
   }), // Added created_by field
-  created_at: text("created_at").default("now()"),
-  updated_at: text("updated_at").default("now()"),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
 });
 
 export const references = pgTable("references", {
@@ -40,8 +41,8 @@ export const references = pgTable("references", {
   }),
   type: text("type").notNull().default("link"),
   url: text("url").notNull(),
-  created_at: text("created_at").default("now()"),
-  updated_at: text("updated_at").default("now()"),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
   user_id: integer("user_id").references(() => users.id),
 });
 
@@ -62,8 +63,8 @@ export const notes = pgTable("notes", {
     onDelete: "cascade",
   }),
   include_global: boolean("include_global").default(false),
-  created_at: text("created_at").default("now()"),
-  updated_at: text("updated_at").default("now()"),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
 });
 
 // Relations

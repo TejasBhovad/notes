@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.3",
+    "@tanstack/react-query": "^5.45.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
