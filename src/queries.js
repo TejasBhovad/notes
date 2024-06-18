@@ -1,6 +1,6 @@
 "use server";
 import db from "@/src/db.js";
-import { users, subjects, references, notes, folders } from "@/src/schema";
+import { users, subjects, references, notes, folders } from "@/src/schema.js";
 import { asc, eq } from "drizzle-orm";
 
 // USER
@@ -201,4 +201,11 @@ export const fetchFoldersByUser = async (user_id) => {
     .where(eq(folders.user_id, user_id))
     .orderBy(asc(folders.created_at));
   return folders;
+};
+
+// GET ALL USERS
+export const fetchAllUsers = async () => {
+  console.log("fetching all users");
+  const usersList = await db.select().from(users).orderBy(asc(users.id));
+  return usersList;
 };

@@ -1,10 +1,11 @@
 "use client";
 import { createUser } from "@/src/queries";
+import { fetchAllUsers } from "@/src/queries";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-
+import { useQueryClient } from "@tanstack/react-query";
 const page = () => {
-  //   const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [image, setImage] = useState("");
@@ -15,12 +16,20 @@ const page = () => {
     mutationFn: createUser,
     onSuccess: (data) => {
       console.log("created user", data);
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     },
     onError: (error) => {
       console.error("error", error);
     },
   });
 
+  const { data, isLoading, isError } = useQuery({
+    queryFn: async () => await fetchAllUsers(),
+    queryKey: ["users"], //Array according to Documentation
+  });
+
+  if (isLoading) return <>Loading</>;
+  if (isError) return <div>Sorry There was an Error</div>;
   function createNewUser() {
     console.log("creating user", name, email, image, role, subscribed_to);
     mutatation.mutate({ name, email, image, role, subscribed_to });
@@ -72,6 +81,14 @@ const page = () => {
           Create User
         </button>
       </div>
+
+      <span className="text-wrap p-3 overflow-x-auto">
+        {isLoading ? (
+          <span>Loading...</span>
+        ) : (
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+        )}
+      </span>
     </div>
   );
 };
