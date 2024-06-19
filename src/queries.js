@@ -40,15 +40,15 @@ export const getUserByEmail = async (email) => {
 };
 
 // SUBJECT
-export const createSubject = async (
+export const createSubject = async ({
   name,
   created_by,
   description,
-  archived = false
-) => {
+  archived = false,
+}) => {
   try {
     console.log("creating subject", name, created_by, description);
-    const subject = await subjects.insert({
+    const subject = await db.insert(subjects).values({
       name,
       created_by,
       description,
@@ -62,16 +62,16 @@ export const createSubject = async (
 };
 
 // REFERENCE
-export const createReference = async (
+export const createReference = async ({
   name,
   subject_id,
   type = "link",
   url,
-  user_id
-) => {
+  user_id,
+}) => {
   try {
     console.log("creating reference", name, subject_id, type, url, user_id);
-    const reference = await references.insert({
+    const reference = await db.insert(references).values({
       name,
       subject_id,
       type,
@@ -86,14 +86,15 @@ export const createReference = async (
 };
 
 // FOLDER
-export const createFolder = async (name, subject_id, user_id) => {
+export const createFolder = async ({ name, subject_id, user_id }) => {
   try {
     console.log("creating folder", name, subject_id, user_id);
-    const folder = await folders.insert({
+    const folder = await db.insert(folders).values({
       name,
       subject_id,
       user_id,
     });
+
     return folder;
   } catch (error) {
     console.error(error);
@@ -102,15 +103,15 @@ export const createFolder = async (name, subject_id, user_id) => {
 };
 
 // NOTE
-export const createNote = async (
+export const createNote = async ({
   name,
   user_id,
   folder_id,
-  include_global = false
-) => {
+  include_global = false,
+}) => {
   try {
     console.log("creating note", name, user_id, folder_id, include_global);
-    const note = await notes.insert({
+    const note = await db.insert(notes).values({
       name,
       user_id,
       folder_id,
@@ -125,82 +126,82 @@ export const createNote = async (
 
 // FETCH ALL SUBJECTS WHICH ARE NOT ARCHIVED
 export const fetchSubjects = async () => {
-  const subjects = await db
+  const subjectsList = await db
     .select()
     .from(subjects)
     .where(eq(subjects.archived, false))
     .orderBy(asc(subjects.created_at));
-  return subjects;
+  return subjectsList;
 };
 
 // FETCH ALL ARCHIVED SUBJECTS
 export const fetchArchivedSubjects = async () => {
-  const subjects = await db
+  const subjectsList = await db
     .select()
     .from(subjects)
     .where(eq(subjects.archived, true))
     .orderBy(asc(subjects.created_at));
-  return subjects;
+  return subjectsList;
 };
 
 // FETCH ALL REFERENCES FOR A SUBJECT
 export const fetchReferences = async (subject_id) => {
-  const references = await db
+  const referencesList = await db
     .select()
     .from(references)
     .where(eq(references.subject_id, subject_id))
     .orderBy(asc(references.created_at));
-  return references;
+  return referencesList;
 };
 
 // FETCH ALL FOLDERS FOR A SUBJECT
 export const fetchFolders = async (subject_id) => {
-  const folders = await db
+  const foldersList = await db
     .select()
     .from(folders)
     .where(eq(folders.subject_id, subject_id))
     .orderBy(asc(folders.created_at));
-  return folders;
+  return foldersList;
 };
 
 // FETCH ALL NOTES FOR A FOLDER
 export const fetchNotes = async (folder_id) => {
-  const notes = await db
+  const notesList = await db
     .select()
     .from(notes)
     .where(eq(notes.folder_id, folder_id))
     .orderBy(asc(notes.created_at));
-  return notes;
+  return notesList;
 };
 
 // FETCH ALL NOTES FOR created_by USER
 export const fetchNotesByUser = async (user_id) => {
-  const notes = await db
+  const notesList = await db
     .select()
     .from(notes)
     .where(eq(notes.user_id, user_id))
     .orderBy(asc(notes.created_at));
-  return notes;
+  return notesList;
 };
 
 // FETCH ALL REFERENCES FOR created_by USER
 export const fetchReferencesByUser = async (user_id) => {
-  const references = await db
+  const referencesList = await db
     .select()
     .from(references)
     .where(eq(references.user_id, user_id))
     .orderBy(asc(references.created_at));
-  return references;
+  return referencesList;
 };
 
 // FETCH ALL FOLDERS FOR created_by USER
 export const fetchFoldersByUser = async (user_id) => {
-  const folders = await db
+  const foldersList = await db
     .select()
     .from(folders)
     .where(eq(folders.user_id, user_id))
     .orderBy(asc(folders.created_at));
-  return folders;
+  return foldersList;
 };
 
 // GET ALL USERS

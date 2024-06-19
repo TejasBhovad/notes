@@ -2,7 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import { createUser } from "@/src/queries";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllUsers } from "@/src/queries"; // Adjust the import path as necessary
-
+import {
+  fetchFoldersByUser,
+  fetchReferencesByUser,
+  fetchNotesByUser,
+} from "@/src/queries";
 import { useQueryClient } from "@tanstack/react-query";
 export function useCreateUserMutation() {
   const queryClient = useQueryClient();
@@ -23,6 +27,33 @@ export function useFetchAllUsers() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["users"],
     queryFn: async () => await fetchAllUsers(),
+  });
+
+  return { data, isLoading, isError, error };
+}
+
+export function useFetchFoldersByUser(user_id) {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["folders"],
+    queryFn: async () => await fetchFoldersByUser(user_id),
+  });
+
+  return { data, isLoading, isError, error };
+}
+
+export function useFetchReferencesByUser(user_id) {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["references"],
+    queryFn: async () => await fetchReferencesByUser(user_id),
+  });
+
+  return { data, isLoading, isError, error };
+}
+
+export function useFetchNotesByUser(user_id) {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["notes"],
+    queryFn: async () => await fetchNotesByUser(user_id),
   });
 
   return { data, isLoading, isError, error };

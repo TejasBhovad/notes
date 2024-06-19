@@ -1,17 +1,18 @@
 "use client";
 import { useState } from "react";
-import { useFetchAllUsers } from "@/data/user";
-import { useCreateUserMutation } from "@/data/user";
+
+import { useCreateNoteMutation } from "@/data/notes";
+import { useFetchNotes } from "@/data/notes";
 const page = () => {
+  //  states
+  const [folder_id, setFolderId] = useState(1);
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [image, setImage] = useState("");
-  const [role, setRole] = useState("user");
-  const [subscribed_to, setSubscribedTo] = useState([]);
-  const createUser = useCreateUserMutation();
+  const [user_id, setUserId] = useState(1);
+  const [include_global, setIncludeGlobal] = useState(false);
+  const createNote = useCreateNoteMutation();
+  const { data, isLoading, isError, error } = useFetchNotes(folder_id);
 
-  const { data, isLoading, isError, error } = useFetchAllUsers();
-
+  // fetch data
   if (isLoading) return <>Loading</>;
   if (isError)
     return (
@@ -20,14 +21,15 @@ const page = () => {
         <pre>{JSON.stringify(error, null, 2)}</pre>
       </div>
     );
-  function createNewUser() {
-    console.log("creating user", name, email, image, role, subscribed_to);
-    createUser.mutate({
+
+  // create data
+  function createNewSubject() {
+    // console.log("creating reference", name, subject_id, type, url, user_id);
+    createNote.mutate({
       name,
-      email,
-      image,
-      role,
-      subscribed_to,
+      user_id,
+      folder_id,
+      include_global,
     });
   }
 
@@ -36,44 +38,30 @@ const page = () => {
       <div className="w-full h-auto flex flex-col p-2 gap-2">
         <input
           type="text"
-          placeholder="name"
-          className="w-full py-1 px-4 rounded-sm bg-slate-700 text-white"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          placeholder="Name"
+          className="p-2 border border-gray-300 rounded text-black"
         />
         <input
-          type="text"
-          className="w-full py-1 px-4 rounded-sm bg-slate-700 text-white"
-          placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="number"
+          value={folder_id}
+          onChange={(e) => setFolderId(e.target.value)}
+          placeholder="Folder Id"
+          className="p-2 border border-gray-300 rounded text-black"
         />
         <input
-          type="text"
-          placeholder="image"
-          value={image}
-          className="w-full py-1 px-4 rounded-sm bg-slate-700 text-white"
-          onChange={(e) => setImage(e.target.value)}
-        />
-        <input
-          className="w-full py-1 px-4 rounded-sm bg-slate-700 text-white"
-          type="text"
-          placeholder="role"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-        />
-        <input
-          className="w-full py-1 px-4 rounded-sm bg-slate-700 text-white"
-          type="text"
-          placeholder="subscribed_to"
-          value={subscribed_to}
-          onChange={(e) => setSubscribedTo(e.target.value)}
+          type="number"
+          value={user_id}
+          onChange={(e) => setUserId(e.target.value)}
+          placeholder="User Id"
+          className="p-2 border border-gray-300 rounded text-black"
         />
         <button
-          onClick={createNewUser}
-          className="w-full py-1 px-4 rounded-sm bg-slate-100 text-slate-900 hover:bg-slate-200 active:bg-slate-300 transition-colors duration-75 ease-in-out font-semibold"
+          onClick={createNewSubject}
+          className="p-2 bg-blue-500 text-white rounded"
         >
-          Create User
+          Create Note
         </button>
       </div>
 

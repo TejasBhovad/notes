@@ -13,6 +13,8 @@ Simple WebApp to distribute notes among students
 
 # Todo (Testng DB):
 
+- update tables and re-migrate cause time stamps not correctly working
+
 ## Adding Stuff
 
 - check adding user [x]

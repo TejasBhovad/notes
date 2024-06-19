@@ -51,8 +51,8 @@ export const folders = pgTable("folders", {
   name: text("name").notNull(),
   subject_id: integer("subject_id").references(() => subjects.id),
   user_id: integer("user_id").references(() => users.id),
-  created_at: text("created_at").default("now()"),
-  updated_at: text("updated_at").default("now()"),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
 });
 
 export const notes = pgTable("notes", {
