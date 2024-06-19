@@ -1,39 +1,34 @@
 "use client";
-import { createUser } from "@/src/queries";
-import { fetchAllUsers } from "@/src/queries";
-import { useQuery, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useFetchAllUsers } from "@/data/user";
+import { useCreateUserMutation } from "@/data/user";
 const page = () => {
-  const queryClient = useQueryClient();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [image, setImage] = useState("");
   const [role, setRole] = useState("user");
   const [subscribed_to, setSubscribedTo] = useState([]);
+  const createUser = useCreateUserMutation();
 
-  const mutatation = useMutation({
-    mutationFn: createUser,
-    onSuccess: (data) => {
-      console.log("created user", data);
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-    },
-    onError: (error) => {
-      console.error("error", error);
-    },
-  });
-
-  const { data, isLoading, isError } = useQuery({
-    queryFn: async () => await fetchAllUsers(),
-    queryKey: ["users"], //Array according to Documentation
-  });
+  const { data, isLoading, isError, error } = useFetchAllUsers();
 
   if (isLoading) return <>Loading</>;
-  if (isError) return <div>Sorry There was an Error</div>;
+  if (isError)
+    return (
+      <div>
+        Sorry There was an Error
+        <pre>{JSON.stringify(error, null, 2)}</pre>
+      </div>
+    );
   function createNewUser() {
     console.log("creating user", name, email, image, role, subscribed_to);
-    mutatation.mutate({ name, email, image, role, subscribed_to });
-    // createUser(name, email, image, role, subscribed_to);
+    createUser.mutate({
+      name,
+      email,
+      image,
+      role,
+      subscribed_to,
+    });
   }
 
   return (

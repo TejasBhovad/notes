@@ -15,7 +15,7 @@ Simple WebApp to distribute notes among students
 
 ## Adding Stuff
 
-- check adding user
+- check adding user [x]
 - check adding subjects
 - check adding references within subjects
 - check adding folders within subjects
