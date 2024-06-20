@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import SidebarWrapper from "@/components/SidebarWrapper";
 import "./globals.css";
 import { ReactQueryClientProvider } from "@/providers/ReactQueryClientProvider";
 const inter = Inter({ subsets: ["latin"] });
@@ -35,7 +36,9 @@ export default function RootLayout({ children }) {
           <meta name="msapplication-TileColor" content="#F992FF" />
           <meta name="theme-color" content="#333333" />
         </head>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <SidebarWrapper> {children}</SidebarWrapper>
+        </body>
       </html>
     </ReactQueryClientProvider>
   );
