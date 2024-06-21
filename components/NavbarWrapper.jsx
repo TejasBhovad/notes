@@ -3,12 +3,10 @@ import { motion } from "framer-motion";
 import { useMediaQuery } from "@/lib/media";
 const NavbarWrapper = ({ children }) => {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex flex-col bg-base rounded-2xl">
       <Navbar />
       <MobileNavbar />
-      <main className="w-full h-full pt-14 sm:pl-48 flex flex-col">
-        {children}
-      </main>
+      <main className="w-full h-full flex flex-col">{children}</main>
     </div>
   );
 };
@@ -17,7 +15,7 @@ function Navbar() {
   const isSmallScreen = useMediaQuery("(max-width: 640px)");
   return (
     <motion.nav
-      className="hidden sm:flex pl-48 absolute h-14 w-full bg-slate-700"
+      className="hidden sm:flex h-14 w-full bg-transparent rounded-2xl p-2"
       variants={{
         hidden: { y: -60 },
         visible: { y: 0 },
@@ -35,7 +33,7 @@ function MobileNavbar() {
   const isSmallScreen = useMediaQuery("(max-width: 640px)");
   return (
     <motion.nav
-      className="flex sm:hidden h-14 w-full bg-slate-700 absolute"
+      className="flex sm:hidden h-14 w-full bg-secondary"
       variants={{
         hidden: { y: -60 },
         visible: { y: 0 },
