@@ -1,5 +1,7 @@
 "use client";
+import SignIn from "@/components/auth/SignIn";
 import { motion } from "framer-motion";
+import SearchBar from "@/components/SearchBar";
 import { useMediaQuery } from "@/lib/media";
 const NavbarWrapper = ({ children }) => {
   return (
@@ -15,7 +17,7 @@ function Navbar() {
   const isSmallScreen = useMediaQuery("(max-width: 640px)");
   return (
     <motion.nav
-      className="hidden sm:flex h-14 w-full bg-transparent rounded-2xl p-2"
+      className="hidden sm:flex h-14 w-full bg-transparent py-2 gap-3 px-3"
       variants={{
         hidden: { y: -60 },
         visible: { y: 0 },
@@ -24,7 +26,12 @@ function Navbar() {
       animate={isSmallScreen ? "hidden" : "visible"}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      dekstop nav
+      <div className="w-full">
+        <SearchBar />
+      </div>
+      <div className="">
+        <SignIn />
+      </div>
     </motion.nav>
   );
 }
