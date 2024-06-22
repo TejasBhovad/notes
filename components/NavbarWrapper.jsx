@@ -1,19 +1,30 @@
 "use client";
+import Profile from "@/components/auth/Profile";
 import SignIn from "@/components/auth/SignIn";
+
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import SearchBar from "@/components/SearchBar";
 import { useMediaQuery } from "@/lib/media";
 const NavbarWrapper = ({ children }) => {
+  const { data: session, status } = useSession();
+  const [email, setEmail] = useState("");
+  useEffect(() => {
+    if (session) {
+      setEmail(session.user.email);
+    }
+  }, [session]);
   return (
     <div className="w-full h-full flex flex-col bg-base rounded-2xl">
-      <Navbar />
+      <Navbar session={session} status={status} />
       <MobileNavbar />
       <main className="w-full h-full flex flex-col">{children}</main>
     </div>
   );
 };
 
-function Navbar() {
+function Navbar({ session, status }) {
   const isSmallScreen = useMediaQuery("(max-width: 640px)");
   return (
     <motion.nav
@@ -30,7 +41,19 @@ function Navbar() {
         <SearchBar />
       </div>
       <div className="">
-        <SignIn />
+        {status === "loading" && <span>Loading...</span>}
+        {session && status === "authenticated" && (
+          <>
+            {/* <span>Welcome, {session.user.name}</span>
+            <SignOut /> */}
+            <Profile
+              name={session.user.name}
+              role={"student"}
+              image={session?.user?.image}
+            />
+          </>
+        )}
+        {!session && status !== "loading" && <SignIn />}
       </div>
     </motion.nav>
   );
