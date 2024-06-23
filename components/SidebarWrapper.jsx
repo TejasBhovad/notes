@@ -5,7 +5,7 @@ import NavbarWrapper from "@/components/NavbarWrapper";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "@/lib/media";
 import NotesButton from "@/components/NotesButton";
-import { Folder } from "lucide-react";
+
 const SidebarWrapper = ({ children }) => {
   return (
     <div className="w-full h-full bg-base">
@@ -19,6 +19,7 @@ const SidebarWrapper = ({ children }) => {
           }}
           initial="hidden"
           animate="visible"
+          viewport={{ once: true }}
           transition={{ duration: 0.15, ease: "easeInOut", delay: 0.15 }}
         >
           <NavbarWrapper>{children}</NavbarWrapper>
@@ -54,6 +55,7 @@ function Sidebar() {
         hidden: { x: -196 },
         visible: { x: 0 },
       }}
+      viewport={{ once: true }}
       initial="hidden"
       animate={isSmallScreen ? "hidden" : "visible"}
       transition={{ duration: 0.15, ease: "easeInOut", delay: 0.15 }}
