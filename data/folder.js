@@ -22,6 +22,7 @@ export function useFetchFolders(subject_id) {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["folders"],
     queryFn: async () => await fetchFolders(subject_id),
+    enabled: !!subject_id,
   });
 
   return { data, isLoading, isError, error };

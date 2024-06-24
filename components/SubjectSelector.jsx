@@ -23,8 +23,11 @@ import {
 const SubjectSelector = ({
   setSelectedSubject,
   selectedSubject,
+  selectedSubjectId,
+  setSelectedSubjectId,
   subjects,
   user,
+  user_id,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(selectedSubject || "");
@@ -38,6 +41,9 @@ const SubjectSelector = ({
   const handleSelect = (newValue) => {
     setValue(newValue);
     setSelectedSubject(newValue);
+    setSelectedSubjectId(
+      subjects.find((subject) => subject.value === newValue)?.id
+    );
     setOpen(false);
   };
 
@@ -59,7 +65,7 @@ const SubjectSelector = ({
     createSubject.mutate(
       {
         name: newSubject,
-        created_by: user.id,
+        created_by: user_id,
         description: newDescription,
       },
       {
@@ -71,6 +77,7 @@ const SubjectSelector = ({
           if (newSubject) {
             setValue(newSubject.value);
             setSelectedSubject(newSubject.value);
+            setSelectedSubjectId(newSubject.id);
           }
           setNewSubject("");
           setNewDescription("");
