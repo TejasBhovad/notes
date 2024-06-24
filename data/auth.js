@@ -1,28 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { auth } from "../auth";
 
-export async function fetchSession() {
-  const res = await fetch("/api/auth/session");
-  const session = await res.json();
-  if (Object.keys(session).length > 0) {
-    return session;
-  }
-  return null;
-}
+export default async function fetchUser() {
+  const session = await auth();
 
-export function useSession({
-  required,
-  redirectTo = "/api/auth/signin?error=SessionExpired",
-  queryConfig = {},
-} = {}) {
-  const router = useRouter();
-  const query = useQuery(["session"], fetchSession, {
-    ...queryConfig,
-    onSettled(data, error) {
-      if (queryConfig.onSettled) queryConfig.onSettled(data, error);
-      if (data || !required) return;
-      router.push(redirectTo);
-    },
-  });
-  return [query.data, query.status === "loading"];
+  if (!session.user) return null;
+
+  return session;
 }

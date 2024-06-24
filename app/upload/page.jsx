@@ -1,4 +1,5 @@
 "use client";
+import UploadPage from "@/components/UploadPage";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { getUserByEmail } from "@/src/queries";
@@ -18,25 +19,40 @@ const page = () => {
       });
     }
   }, [email]);
-  if (status === "loading") {
-    return <div>Loading...</div>;
+  if (status === "loading" || !user) {
+    return (
+      <div className="w-full h-full flex flex-col ml-24 items-center justify-center font-medium text-xl">
+        <h1>Loading...</h1>
+        <p>Please wait while we fetch your user data.</p>
+      </div>
+    );
   }
   if (!session || status !== "authenticated") {
-    return <div>Not authenticated</div>;
+    return (
+      <div className="w-full h-full flex items-center ml-24 justify-center font-medium text-xl">
+        Not authenticated
+      </div>
+    );
   }
   if (user && user.role !== "admin") {
     return (
-      <div>
+      <div className="w-full h-full flex flex-col ml-24 items-center justify-center font-medium text-xl">
         <h1>Unauthorized</h1>
-        <p>You do not have permission to view this page</p>
-        {JSON.stringify(user)}
+        <p>You do not have permission to access this page.</p>
       </div>
     );
   }
   if (status === "authenticated" && !user) {
-    return <div>Loading user...</div>;
+    return (
+      <div className="w-full h-full flex items-center  ml-24 justify-center font-medium text-xl">
+        Loading user...
+      </div>
+    );
   }
-  return <div>Admin only</div>;
+  return (
+    <div className="w-full h-full">
+      <UploadPage session={session} user={user} />
+    </div>
+  );
 };
-
 export default page;
