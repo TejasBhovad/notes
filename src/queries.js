@@ -107,12 +107,14 @@ export const createNote = async ({
   name,
   user_id,
   folder_id,
+  url,
   include_global = false,
 }) => {
   try {
     console.log("creating note", name, user_id, folder_id, include_global);
     const note = await db.insert(notes).values({
       name,
+      url,
       user_id,
       folder_id,
       include_global,

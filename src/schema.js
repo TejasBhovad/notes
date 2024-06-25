@@ -59,6 +59,7 @@ export const notes = pgTable("notes", {
   id: serial("id").primaryKey(),
   user_id: integer("user_id").references(() => users.id),
   name: text("name").notNull(),
+  url: text("url").notNull(),
   folder_id: integer("folder_id").references(() => folders.id, {
     onDelete: "cascade",
   }),

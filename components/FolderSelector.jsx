@@ -6,6 +6,7 @@ import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
 import { useCreateFolderMutation } from "@/data/folder";
 import { Button } from "@/components/ui/button";
+
 import {
   Command,
   CommandEmpty,
@@ -48,6 +49,10 @@ const FolderSelector = ({
 
   const createfolder = useCreateFolderMutation();
   function createnewFolder() {
+    if (!selectedSubjectId) {
+      alert("Please select a subject first");
+      return;
+    }
     if (user.role !== "admin") {
       alert("You are not authorized to create a new folder");
       return;
@@ -120,12 +125,12 @@ const FolderSelector = ({
   // }
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild disabled={!selectedSubjectId}>
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between border-[1.5px] border-white/10 hover:bg-white/5 hover:text-white"
+          className="md:w-[200px] w-1/2 justify-between border-[1.5px] border-white/10 hover:bg-white/5 hover:text-white"
           onClick={() => setOpen((prev) => !prev)}
         >
           {value
