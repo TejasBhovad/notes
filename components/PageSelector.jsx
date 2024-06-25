@@ -47,7 +47,7 @@ const PageSelector = () => {
       <SelectContent>
         <SelectItem value="explore">Explore</SelectItem>
         <SelectItem value="archived">Archived</SelectItem>
-        <SelectItem value="upload">Upload</SelectItem>
+        {/* <SelectItem value="upload">Upload</SelectItem> */}
       </SelectContent>
     </Select>
   );

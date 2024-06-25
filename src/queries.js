@@ -212,3 +212,10 @@ export const fetchAllUsers = async () => {
   const usersList = await db.select().from(users).orderBy(asc(users.id));
   return usersList;
 };
+
+// DELETE note
+export const deleteNote = async (note_id) => {
+  console.log("deleting note", note_id);
+  const note = await db.delete(notes).where(eq(notes.id, note_id));
+  return note;
+};

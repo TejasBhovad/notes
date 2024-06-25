@@ -48,6 +48,13 @@ const Profile = ({ image, name, role = "student", isMobile = false }) => {
             </Button>
           </Link>
         )}
+        {role === "admin" && (
+          <Link href="/manage">
+            <Button className="w-full text-center font-medium bg-secondary border-[1.5px] border-white/15 hover:bg-white/5">
+              Manage
+            </Button>
+          </Link>
+        )}
         <SignOut />
       </PopoverContent>
     </Popover>
