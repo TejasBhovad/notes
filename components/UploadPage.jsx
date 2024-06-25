@@ -177,7 +177,7 @@ const UploadPage = ({ session, user }) => {
           <Input
             type="text"
             // default value to file name w.o pdf
-
+            value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Name"
             className="p-2 border border-gray-300/10 rounded text-white"

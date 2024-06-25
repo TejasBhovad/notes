@@ -43,14 +43,14 @@ const Profile = ({ image, name, role = "student", isMobile = false }) => {
       <PopoverContent className="text-sm bg-secondary text-white border-white/15 flex flex-col gap-2">
         {role === "admin" && (
           <Link href="/upload">
-            <Button className="w-full text-center font-medium bg-secondary border-[1.5px] border-white/15 hover:bg-white/5">
+            <Button className="w-full text-center font-medium bg-base border-[1.5px] border-white/5 hover:bg-white/5">
               Upload
             </Button>
           </Link>
         )}
         {role === "admin" && (
           <Link href="/manage">
-            <Button className="w-full text-center font-medium bg-secondary border-[1.5px] border-white/15 hover:bg-white/5">
+            <Button className="w-full text-center font-medium bg-base border-[1.5px] border-white/5 hover:bg-white/5">
               Manage
             </Button>
           </Link>
