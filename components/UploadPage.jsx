@@ -10,8 +10,11 @@ import { UploadDropzone } from "@uploadthing/react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { useToast } from "@/components/ui/use-toast";
+import { Description } from "@radix-ui/react-dialog";
 
 const UploadPage = ({ session, user }) => {
+  const { toast } = useToast();
   const createNote = useCreateNoteMutation();
   const queryClient = useQueryClient();
   const { data, isLoading, isError, error } = useFetchSubjects();
@@ -53,19 +56,35 @@ const UploadPage = ({ session, user }) => {
 
   function createNewSubject() {
     if (!selectedSubjectId) {
-      alert("Please select a subject first");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "Please select a subject first",
+      });
       return;
     }
     if (!selectedFolderId) {
-      alert("Please select a folder first");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "Please select a folder first",
+      });
       return;
     }
     if (!url) {
-      alert("URL is required");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "Please upload a file first",
+      });
       return;
     }
     if (files.length === 0) {
-      alert("Please upload a file");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "Please upload a file first",
+      });
       return;
     }
     console.log("creating note", name, user_id, selectedFolderId, url);
@@ -75,7 +94,10 @@ const UploadPage = ({ session, user }) => {
       user_id: user_id,
       folder_id: selectedFolderId,
     });
-    alert("Note created successfully");
+    toast({
+      title: "✅ Success",
+      description: "Note created successfully",
+    });
     setFiles([]);
     setName("");
     setUrl("");
@@ -130,7 +152,11 @@ const UploadPage = ({ session, user }) => {
               setFiles([...files, ...res]);
             }}
             onUploadError={(error) => {
-              alert(`ERROR! ${error.message}`);
+              toast({
+                variant: "destructive",
+                title: "🚧 Error",
+                description: error,
+              });
             }}
           />
         </div>

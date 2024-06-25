@@ -1,4 +1,6 @@
 "use client";
+import { Toaster } from "@/components/ui/toaster";
+
 import { useEffect } from "react";
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
@@ -29,6 +31,7 @@ const SubjectSelector = ({
   user,
   user_id,
 }) => {
+  const { toast } = useToast();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(selectedSubject || "");
   const [newSubject, setNewSubject] = React.useState("");
@@ -50,15 +53,27 @@ const SubjectSelector = ({
   const createSubject = useCreateSubjectMutation();
   function createNewSubject() {
     if (user.role !== "admin") {
-      alert("You are not authorized to create a new subject");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "Friday, February 10, 2023 at 5:57 PM",
+      });
       return;
     }
     if (!newSubject) {
-      alert("Subject name is required");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "Subject name is required",
+      });
       return;
     }
     if (!newDescription) {
-      alert("Subject description is required");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "Subject description is required",
+      });
       return;
     }
     // console.log("creating reference", name, subject_id, type, url, user_id);
@@ -79,6 +94,10 @@ const SubjectSelector = ({
             setSelectedSubject(newSubject.value);
             setSelectedSubjectId(newSubject.id);
           }
+          toast({
+            title: "✅ Success",
+            description: "Subject created successfully",
+          });
           setNewSubject("");
           setNewDescription("");
         },

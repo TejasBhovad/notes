@@ -2,6 +2,8 @@
 import Doc from "./logo/Doc";
 import Options from "./logo/Options";
 import Link from "next/link";
+import { useToast } from "@/components/ui/use-toast";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,11 +28,16 @@ import { useState } from "react";
 import { useDeleteNoteMutation } from "@/data/notes";
 
 const NoteCard = ({ id, name, url }) => {
+  const { toast } = useToast();
   const deleteMutation = useDeleteNoteMutation();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   function deleteNote() {
     deleteMutation.mutate(id);
+    toast({
+      title: "✅ Note deleted",
+      description: "The note has been successfully deleted",
+    });
   }
 
   const clickDelete = (event) => {

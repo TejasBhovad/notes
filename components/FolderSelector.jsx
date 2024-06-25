@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
 import { useCreateFolderMutation } from "@/data/folder";
 import { Button } from "@/components/ui/button";
-
+import { Toaster } from "@/components/ui/toaster";
 import {
   Command,
   CommandEmpty,
@@ -30,6 +30,7 @@ const FolderSelector = ({
   selectedSubjectId,
   setSelectedFolderId,
 }) => {
+  const { toast } = useToast();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(selectedFolder || "");
   const [newFolder, setNewFolder] = React.useState("");
@@ -50,15 +51,27 @@ const FolderSelector = ({
   const createfolder = useCreateFolderMutation();
   function createnewFolder() {
     if (!selectedSubjectId) {
-      alert("Please select a subject first");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "Please select a subject first",
+      });
       return;
     }
     if (user.role !== "admin") {
-      alert("You are not authorized to create a new folder");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "You are not authorized to create a new folder",
+      });
       return;
     }
     if (!newFolder) {
-      alert("folder name is required");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "folder name is required",
+      });
       return;
     }
     console.log("creating folder", newFolder, selectedSubjectId, user_id);
@@ -80,49 +93,14 @@ const FolderSelector = ({
             setSelectedFolderId(newFolder.id);
           }
           setNewFolder("");
+          toast({
+            title: "✅ Success",
+            description: "Folder created successfully",
+          });
         },
       }
     );
   }
-
-  // const createfolder = useCreatefolderMutation();
-  // function createnewFolder() {
-  //   if (user.role !== "admin") {
-  //     alert("You are not authorized to create a new folder");
-  //     return;
-  //   }
-  //   if (!newFolder) {
-  //     alert("folder name is required");
-  //     return;
-  //   }
-  //   if (!newDescription) {
-  //     alert("folder description is required");
-  //     return;
-  //   }
-  //   // console.log("creating reference", name, folder_id, type, url, user_id);
-  //   createfolder.mutate(
-  //     {
-  //       name: newFolder,
-  //       created_by: user.id,
-  //       description: newDescription,
-  //     },
-  //     {
-  //       onSuccess: () => {
-  //         // find new folder from folders and set it as selected
-  //         const newFolder = folders.find(
-  //           (folder) => folder.value === newFolder
-  //         );
-  //         if (newFolder) {
-  //           setValue(newFolder.value);
-  //           setSelectedfolder(newFolder.value);
-  //           setSelectedfolderId(newFolder.id);
-  //         }
-  //         setnewFolder("");
-  //         setNewDescription("");
-  //       },
-  //     }
-  //   );
-  // }
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild disabled={!selectedSubjectId}>

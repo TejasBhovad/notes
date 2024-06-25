@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import SidebarWrapper from "@/components/SidebarWrapper";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 import { ReactQueryClientProvider } from "@/providers/ReactQueryClientProvider";
 import AuthProvider from "@/providers/AuthProvider";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
@@ -56,6 +57,7 @@ export default function RootLayout({ children }) {
               routerConfig={extractRouterConfig(ourFileRouter)}
             />
             <SidebarWrapper> {children}</SidebarWrapper>
+            <Toaster />
           </body>
         </html>
       </ReactQueryClientProvider>
