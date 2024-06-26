@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
 import { useCreateFolderMutation } from "@/data/folder";
 import { Button } from "@/components/ui/button";
-import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "./ui/use-toast";
 import {
   Command,
   CommandEmpty,

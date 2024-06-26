@@ -1,11 +1,11 @@
 import React from "react";
 
-function Doc() {
+function Doc({ size = 64 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="64"
-      height="64"
+      width={size}
+      height={size}
       fill="none"
       viewBox="0 0 111 111"
     >

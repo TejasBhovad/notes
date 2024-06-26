@@ -1,6 +1,6 @@
 "use client";
-import { Toaster } from "@/components/ui/toaster";
 
+import { useToast } from "./ui/use-toast";
 import { useEffect } from "react";
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";

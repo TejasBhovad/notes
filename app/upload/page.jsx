@@ -3,6 +3,7 @@ import UploadPage from "@/components/UploadPage";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { getUserByEmail } from "@/src/queries";
+import { useToast } from "@/components/ui/use-toast";
 const page = () => {
   const { data: session, status } = useSession();
   const [email, setEmail] = useState("");

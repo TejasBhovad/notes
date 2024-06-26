@@ -1,11 +1,11 @@
 import React from "react";
 
-function Folder() {
+function Folder({ dim = 20 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
+      width={dim}
+      height={dim}
       viewBox="0 -960 960 960"
       style={{ fill: "currentColor" }}
     >
