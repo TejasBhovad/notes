@@ -219,3 +219,12 @@ export const deleteNote = async (note_id) => {
   const note = await db.delete(notes).where(eq(notes.id, note_id));
   return note;
 };
+
+// DELETE reference
+export const deleteReference = async (reference_id) => {
+  console.log("deleting reference", reference_id);
+  const reference = await db
+    .delete(references)
+    .where(eq(references.id, reference_id));
+  return reference;
+};
