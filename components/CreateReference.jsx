@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useToast } from "./ui/use-toast";
 import { useCreateReferenceMutation } from "@/data/reference";
 import {
   Dialog,
@@ -13,6 +14,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
 const CreateReference = ({ subject_id, subjectName, user_id, user }) => {
+  const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -34,15 +36,27 @@ const CreateReference = ({ subject_id, subjectName, user_id, user }) => {
 
   const handleSubmit = async () => {
     if (!title) {
-      alert("Please enter a title");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "Please enter a title",
+      });
       return;
     }
     if (!url) {
-      alert("Please enter a url");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "Please enter a URL",
+      });
       return;
     }
     if (user.role !== "admin") {
-      alert("You do not have permission to add references");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "You do not have permission to add references",
+      });
       return;
     }
     let referenceType = isYouTubeVideo(url) ? "video" : "link";
@@ -58,37 +72,16 @@ const CreateReference = ({ subject_id, subjectName, user_id, user }) => {
         onSuccess: () => {
           setTitle("");
           setUrl("");
-          alert("Reference added successfully");
+          toast({
+            title: "✅ Success",
+            description: "Reference added successfully",
+          });
           setIsDialogOpen(false);
         },
       }
     );
   };
-  //   createfolder.mutate(
-  // {
-  //     name: newFolder,
-  //     subject_id: selectedSubjectId,
-  //     user_id: user.id,
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       // find new folder from folders and set it as selected
-  //       const newFolder = folders.find(
-  //         (folder) => folder.value === newFolder
-  //       );
-  //       if (newFolder) {
-  //         setValue(newFolder.value);
-  //         setSelectedFolder(newFolder.value);
-  //         setSelectedFolderId(newFolder.id);
-  //       }
-  //       setNewFolder("");
-  //       toast({
-  //         title: "✅ Success",
-  //         description: "Folder created successfully",
-  //       });
-  //     },
-  //   }
-  // );
+
   return (
     <Dialog
       open={isDialogOpen}

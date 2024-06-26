@@ -228,3 +228,21 @@ export const deleteReference = async (reference_id) => {
     .where(eq(references.id, reference_id));
   return reference;
 };
+
+export const deleteFiles = async (filesToDelete) => {
+  console.log(filesToDelete);
+  // Implement deletion logic using filesToDelete list
+  const response = await fetch("https://uploadthing.com/api/deleteFiles", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Uploadthing-Api-Key": process.env.UPLOADTHING_SECRET,
+      "X-Uploadthing-Version": "6.1.1",
+    },
+    body: JSON.stringify({
+      fileKeys: filesToDelete,
+      files: [],
+      customIds: [],
+    }),
+  });
+};

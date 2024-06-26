@@ -1,17 +1,29 @@
 import Link from "next/link";
-
+import { useToast } from "./ui/use-toast";
 import { motion } from "framer-motion";
 import { useDeleteReferenceMutation } from "@/data/reference";
 const LinkContainer = ({ role, name, url, id }) => {
+  const { toast } = useToast();
   const deleteReference = useDeleteReferenceMutation();
   const handleDelete = (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (role !== "admin") {
-      alert("You do not have permission to delete references");
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "You do not have permission to delete references",
+      });
       return;
     }
-    deleteReference.mutate(id);
+    deleteReference.mutate(id, {
+      onSuccess: () => {
+        toast({
+          title: "✅ Success",
+          description: "Reference deleted successfully",
+        });
+      },
+    });
   };
 
   return (

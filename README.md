@@ -12,24 +12,12 @@ Simple WebApp to aggregate notes in one plaxe
 
 > Project Docuementation: https://tejasbhovad.notion.site/Notes-Site-d7245491911a4859bbe2d31eb2a4dd23?pvs=4
 
-# Todo (Testng DB):
+# Todo:
 
-- update tables and re-migrate cause time stamps not correctly working []
-
-## Adding Stuff
-
-- check adding user [x]
-- check adding subjects [x]
-- check adding references within subjects [x]
-- check adding folders within subjects [x]
-- check adding notes within folders [x]
-
-## Querying Stuff
-
-- query user with all notes uploaded [x]
-- query subjects with all reference ids, folder ids [x]
-- query all references [x]
-- query all folders [x]
+- Delete confirmation for reference [x]
+- delete note from ut [x]
+- add toast for reference add [x]
+- sidebar content load
 
 # Commands
 

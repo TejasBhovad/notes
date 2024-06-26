@@ -3,7 +3,7 @@ import Doc from "./logo/Doc";
 import Options from "./logo/Options";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
-
+import { deleteFiles } from "@/src/queries";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,10 +33,22 @@ const NoteCard = ({ id, name, url }) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   function deleteNote() {
-    deleteMutation.mutate(id);
-    toast({
-      title: "✅ Note deleted",
-      description: "The note has been successfully deleted",
+    if (!url) {
+      toast({
+        variant: "destructive",
+        title: "🚧 Error",
+        description: "No file found to delete",
+      });
+    }
+
+    deleteFiles(url);
+    deleteMutation.mutate(id, {
+      onSuccess: () => {
+        toast({
+          title: "✅ Note deleted",
+          description: "The note has been successfully deleted",
+        });
+      },
     });
   }
 
