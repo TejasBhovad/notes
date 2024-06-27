@@ -20,9 +20,11 @@ export function useCreateFolderMutation() {
 
 export function useFetchFolders(subject_id) {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["folders"],
+    queryKey: ["folders", subject_id],
     queryFn: async () => await fetchFolders(subject_id),
     enabled: !!subject_id,
+    // dont prefetch`
+    prefetchQuery: false,
   });
 
   return { data, isLoading, isError, error };

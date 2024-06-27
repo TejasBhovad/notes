@@ -20,7 +20,7 @@ export function useCreateNoteMutation() {
 
 export function useFetchNotes(folder_id) {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["notes"],
+    queryKey: ["notes", folder_id],
     queryFn: async () => await fetchNotes(folder_id),
     enabled: !!folder_id,
   });

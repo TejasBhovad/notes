@@ -34,7 +34,7 @@ export function useFetchAllUsers() {
 
 export function useFetchFoldersByUser(user_id) {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["folders"],
+    queryKey: ["folders", user_id],
     queryFn: async () => await fetchFoldersByUser(user_id),
   });
 
@@ -43,7 +43,7 @@ export function useFetchFoldersByUser(user_id) {
 
 export function useFetchReferencesByUser(user_id) {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["references"],
+    queryKey: ["references", user_id],
     queryFn: async () => await fetchReferencesByUser(user_id),
   });
 
@@ -52,7 +52,7 @@ export function useFetchReferencesByUser(user_id) {
 
 export function useFetchNotesByUser(user_id) {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["notes"],
+    queryKey: ["notes", user_id],
     queryFn: async () => await fetchNotesByUser(user_id),
   });
 

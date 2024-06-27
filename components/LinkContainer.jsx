@@ -37,7 +37,7 @@ const LinkContainer = ({ role, name, url, id }) => {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-96 h-auto flex flex-col bg-secondary px-4 py-4 rounded-md border-[1.5px] border-white/10 ustify-center relative"
+        className="w-96 h-auto flex flex-col bg-secondary px-4 py-4 rounded-md border-[1.5px] border-white/10 ustify-center relative  hover:bg-base/25 transition-all"
       >
         <span className="overflow-x-auto font-semibold">{name}</span>
         {role === "admin" && (

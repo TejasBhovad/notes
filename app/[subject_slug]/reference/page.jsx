@@ -36,7 +36,7 @@ const page = ({ params }) => {
   const subject_id =
     formattedSubjects &&
     formattedSubjects.find((subject) => subject.slug === params.subject_slug)
-      .id;
+      ?.id;
 
   const {
     data: references,
@@ -50,6 +50,25 @@ const page = ({ params }) => {
   const linkReferences = references?.filter(
     (reference) => reference.type === "link"
   );
+
+  // if no references, return a message
+  if (!references) {
+    return (
+      <div className="p-4 flex flex-col gap-6">
+        <span>
+          <h1 className="text-3xl font-semibold">References</h1>
+          <span className="uppercase text-sm font-semibold text-white/50">
+            {subjectName.replace(/-/g, " ")}
+          </span>
+          <span>
+            <h2 className="text-md font-regular text-red-400/40 py-2">
+              No references found
+            </h2>
+          </span>
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 flex flex-col gap-6">

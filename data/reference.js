@@ -20,7 +20,7 @@ export function useCreateReferenceMutation() {
 
 export function useFetchReferences(subject_id) {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["references"],
+    queryKey: ["references", subject_id],
     queryFn: async () => await fetchReferences(subject_id),
     enabled: !!subject_id,
   });

@@ -1,6 +1,6 @@
 "use client";
-import ReferenceCard from "@/components/ReferenceCard";
-import FolderCard from "@/components/FolderCard";
+import SidebarDropdown from "./SidebarDropdown";
+import { useFetchSubjects } from "@/data/subject";
 import NavbarWrapper from "@/components/NavbarWrapper";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "@/lib/media";
@@ -29,24 +29,15 @@ const SidebarWrapper = ({ children }) => {
   );
 };
 
-const subjectContent = [
-  {
-    type: "reference",
-    link: "/",
-  },
-  {
-    type: "folder",
-    name: "main",
-    link: "/",
-  },
-  {
-    type: "folder",
-    name: "mse qbank",
-    link: "/",
-  },
-];
-
 function Sidebar() {
+  const { data, isLoading, isError, error } = useFetchSubjects();
+  const transformedData =
+    data &&
+    data.map((item) => ({
+      value: item.name.toLowerCase().replace(/\s/g, "-"),
+      label: item.name,
+      id: item.id,
+    }));
   const isSmallScreen = useMediaQuery("(max-width: 640px)");
   return (
     <motion.nav
@@ -61,14 +52,15 @@ function Sidebar() {
       transition={{ duration: 0.15, ease: "easeInOut", delay: 0.15 }}
     >
       <NotesButton />
-      <div className="w-full h-full flex flex-col gap-2">
-        <div className="w-full h-full flex flex-col gap-2">
-          <span className="text-sm px-1 font-semibold text-white/50">
-            AI IN BUSINESS
-          </span>
-          <ReferenceCard link="/" />
-          <FolderCard link="/" name="main" />
-        </div>
+      <div className="w-full h-full flex flex-col gap-4">
+        {transformedData?.map((item) => (
+          <SidebarDropdown
+            key={item.id}
+            name={item.label}
+            id={item.id}
+            subject_slug={item.value}
+          />
+        ))}
       </div>
     </motion.nav>
   );

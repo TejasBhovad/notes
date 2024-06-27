@@ -25,9 +25,23 @@ const page = ({ params }) => {
 
   const folder_id =
     formattedFolders &&
-    formattedFolders.find((folder) => folder.slug === params.folder_slug).id;
+    formattedFolders.find((folder) => folder.slug === params.folder_slug)?.id;
 
   const { data: notes, error: notesError } = useFetchNotes(folder_id);
+
+  // if no notes, return a message
+  if (!notes) {
+    return (
+      <div className="p-4 flex flex-col gap-6">
+        <span>
+          <h1 className="text-3xl font-semibold">Notes</h1>
+          <span className="uppercase text-sm font-semibold text-white/50">
+            No notes found
+          </span>
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 flex flex-col gap-4">

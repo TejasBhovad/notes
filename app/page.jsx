@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import Archive from "@/components/logo/Archive";
 import { useFetchSubjects } from "@/data/subject";
 const page = () => {
   const { data: subjects, error } = useFetchSubjects();
@@ -25,6 +26,21 @@ const page = () => {
             </div>
           </Link>
         ))}
+        <Link
+          href={`/archived`}
+          className="h-24 bg-white/5 hover:bg-white/10 transition-all ease-in-out duration-300 px-5 rounded-md shadow-md w-full flex items-center justify-between"
+        >
+          <div className="w-full flex flex-row justify-between items-center">
+            <div className="flex gap-2 items-center text-white/50">
+              <Archive dim={27} />
+              <span className="text-xl font-semibold text-white/50">
+                Archived Subjects
+              </span>
+            </div>
+
+            <span className="text-sm text-gray-500">View</span>
+          </div>
+        </Link>
       </div>
     </div>
   );
