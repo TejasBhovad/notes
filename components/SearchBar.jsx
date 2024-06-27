@@ -137,7 +137,7 @@ const SearchBar = () => {
             </CommandItem>
             <CommandItem
               className="flex items-end gap-1 h-10 w-full"
-              onSelect={() => setValue("/archived")}
+              onSelect={() => setValue("archived")}
             >
               <Link
                 href="/archived"
