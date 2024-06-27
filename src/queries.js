@@ -2,7 +2,7 @@
 import db from "@/src/db.js";
 import { users, subjects, references, notes, folders } from "@/src/schema.js";
 import { asc, eq } from "drizzle-orm";
-
+import { ilike } from "drizzle-orm";
 // USER
 export const createUser = async ({
   name,
@@ -245,4 +245,23 @@ export const deleteFiles = async (filesToDelete) => {
       customIds: [],
     }),
   });
+};
+
+// search in subjects
+export const searchSubjects = async (searchTerm) => {
+  const subjectsList = await db
+    .select()
+    .from(subjects)
+    .where(ilike(subjects.name, `%${searchTerm}%`))
+    .orderBy(subjects.created_at);
+  return subjectsList;
+};
+// search in notes
+export const searchNotes = async (searchTerm) => {
+  const notesList = await db
+    .select()
+    .from(notes)
+    .where(ilike(notes.name, `%${searchTerm}%`))
+    .orderBy(asc(notes.created_at));
+  return notesList;
 };
