@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import SidebarWrapper from "@/components/SidebarWrapper";
 import "./globals.css";
+import { Suspense } from "react";
 import PostHogPageView from "./PostHogPageView";
 import { Toaster } from "@/components/ui/toaster";
 import { ReactQueryClientProvider } from "@/providers/ReactQueryClientProvider";
@@ -49,7 +50,9 @@ export default function RootLayout({ children }) {
           </head>
           <CSPostHogProvider>
             <body className={inter.className}>
-              <PostHogPageView />
+              <Suspense fallback={null}>
+                <PostHogPageView />
+              </Suspense>
               <NextSSRPlugin
                 /**
                  * The `extractRouterConfig` will extract **only** the route configs
@@ -59,8 +62,7 @@ export default function RootLayout({ children }) {
                  */
                 routerConfig={extractRouterConfig(ourFileRouter)}
               />
-
-              <SidebarWrapper> {children}</SidebarWrapper>
+              <SidebarWrapper>{children}</SidebarWrapper>
               <Toaster />
             </body>
           </CSPostHogProvider>
