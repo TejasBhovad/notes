@@ -1,10 +1,12 @@
 "use client";
+import posthog from "posthog-js";
 import { useToast } from "@/components/ui/use-toast";
 import { Description } from "@radix-ui/react-dialog";
 const page = () => {
   const { toast } = useToast();
 
   function clickToast() {
+    posthog.capture("my event", { property: "value" });
     toast({
       variant: "destructive",
       title: "Success",
