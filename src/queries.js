@@ -219,6 +219,12 @@ export const deleteNote = async (note_id) => {
   const note = await db.delete(notes).where(eq(notes.id, note_id));
   return note;
 };
+// DELETE folder
+export const deleteFolder = async (folder_id) => {
+  console.log("deleting folder", folder_id);
+  const folder = await db.delete(folders).where(eq(folders.id, folder_id));
+  return folder;
+};
 
 // DELETE reference
 export const deleteReference = async (reference_id) => {

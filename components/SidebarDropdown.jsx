@@ -2,6 +2,7 @@ import Dropdown from "./logo/Dropdown";
 import { motion, AnimatePresence } from "framer-motion";
 import ReferenceCard from "@/components/ReferenceCard";
 import FolderCard from "@/components/FolderCard";
+import Link from "next/link";
 import {
   Collapsible,
   CollapsibleContent,
@@ -25,19 +26,23 @@ const SidebarDropdown = ({ name, id, subject_slug }) => {
       open={isOpen}
       onOpenChange={setIsOpen}
     >
-      <CollapsibleTrigger className="text-left text-xs px-1 font-semibold uppercase text-white/50 flex gap-2 items-center">
-        <span className="w-full text-nowrap">{name}</span>
-        <motion.div
-          animate={{
-            rotate: isOpen ? 180 : 0,
-          }}
-          transition={{
-            duration: 0.3,
-          }}
-        >
-          <Dropdown dim={20} />
-        </motion.div>
-      </CollapsibleTrigger>
+      <div className="text-left text-xs px-1 font-semibold uppercase text-white/50 flex gap-2 items-center">
+        <Link href={`/${subject_slug}`}>
+          <span className="w-full text-nowrap">{name}</span>
+        </Link>
+        <CollapsibleTrigger>
+          <motion.div
+            animate={{
+              rotate: isOpen ? 180 : 0,
+            }}
+            transition={{
+              duration: 0.3,
+            }}
+          >
+            <Dropdown dim={20} />
+          </motion.div>
+        </CollapsibleTrigger>
+      </div>
       <CollapsibleContent className="gap-2 flex flex-col">
         <AnimatePresence>
           {isOpen && (

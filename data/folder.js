@@ -1,4 +1,4 @@
-import { createFolder, fetchFolders } from "@/src/queries";
+import { createFolder, fetchFolders, deleteFolder } from "@/src/queries";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -28,4 +28,20 @@ export function useFetchFolders(subject_id) {
   });
 
   return { data, isLoading, isError, error };
+}
+
+export function useDeleteFolderMutation() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: deleteFolder,
+    onSuccess: (data) => {
+      console.log("Folder deleted successfully", data);
+      queryClient.invalidateQueries({ queryKey: ["folders"] });
+    },
+    onError: (error) => {
+      console.error("Error deleting folder", error);
+    },
+  });
+
+  return mutation;
 }

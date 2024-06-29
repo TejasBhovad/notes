@@ -4,7 +4,6 @@ import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
-import { useCreateSubjectMutation } from "@/data/subject";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -60,10 +59,7 @@ const SubjectFinder = ({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput
-            placeholder="Search subject..."
-            onValueChange={(value) => setNewSubject(value)}
-          />
+          <CommandInput placeholder="Search subject..." />
           <CommandList>
             <CommandEmpty className="w-full px-3 py-2 flex flex-col gap-2">
               <span className="font-semibold text-sm">No subject found</span>

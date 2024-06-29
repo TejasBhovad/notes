@@ -12,7 +12,7 @@ import { ourFileRouter } from "./api/uploadthing/core";
 const inter = Inter({ subsets: ["latin"] });
 import { CSPostHogProvider } from "@/providers/PosthogProvider";
 export const metadata = {
-  title: "Erga labs | Notes",
+  title: "Notes App",
   description: "Notes App by Erga Labs",
 };
 

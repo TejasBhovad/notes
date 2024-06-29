@@ -1,4 +1,5 @@
 "use client";
+import Error from "@/app/Error";
 import React from "react";
 import NotesContainer from "@/components/NotesContainer";
 import { useFetchFolders } from "@/data/folder";
@@ -14,9 +15,10 @@ const page = ({ params }) => {
   const subject_id =
     formattedSubjects &&
     formattedSubjects.find((subject) => subject.slug === params.subject_slug)
-      .id;
+      ?.id;
 
   const { data: folders, error: folderError } = useFetchFolders(subject_id);
+
   const formattedFolders = folders?.map((folder) => ({
     name: folder.name,
     slug: folder.name.toLowerCase().replace(/\s+/g, "-"),
@@ -28,6 +30,32 @@ const page = ({ params }) => {
     formattedFolders.find((folder) => folder.slug === params.folder_slug)?.id;
 
   const { data: notes, error: notesError } = useFetchNotes(folder_id);
+
+  // if the current subject is not found, return a 404 page
+  if (
+    !formattedSubjects?.find((subject) => subject.slug === params.subject_slug)
+  ) {
+    return (
+      <Error
+        message={`The subject ${params.subject_slug.replace(
+          /_/g,
+          " "
+        )} does not exist`}
+      />
+    );
+  }
+
+  // if the current folder is not found, return a 404 page
+  if (!formattedFolders?.find((folder) => folder.slug === params.folder_slug)) {
+    return (
+      <Error
+        message={`The folder ${params.folder_slug.replace(
+          /_/g,
+          " "
+        )} does not exist`}
+      />
+    );
+  }
 
   // if no notes, return a message
   if (!notes) {
@@ -47,7 +75,13 @@ const page = ({ params }) => {
     <div className="p-4 flex flex-col gap-4">
       <h1 className="text-2xl font-semibold">{params.folder_slug}</h1>
       {notes?.map((note) => (
-        <NotesContainer key={note.id} name={note.name} url={note.url} />
+        <NotesContainer
+          key={note.id}
+          name={note.name}
+          url={note.url}
+          created_by={note.user_id}
+          subject={params.subject_slug}
+        />
       ))}
     </div>
   );

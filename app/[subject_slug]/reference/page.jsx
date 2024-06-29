@@ -1,4 +1,5 @@
 "use client";
+import Error from "@/app/Error";
 import { useState, useEffect } from "react";
 import CreateReferences from "@/components/CreateReference";
 import LinkContainer from "@/components/LinkContainer";
@@ -33,6 +34,7 @@ const page = ({ params }) => {
     slug: subject.name.toLowerCase().replace(/\s+/g, "-"),
     id: subject.id,
   }));
+
   const subject_id =
     formattedSubjects &&
     formattedSubjects.find((subject) => subject.slug === params.subject_slug)
@@ -50,7 +52,19 @@ const page = ({ params }) => {
   const linkReferences = references?.filter(
     (reference) => reference.type === "link"
   );
-
+  // if the current subject is not found, return a 404 page
+  if (
+    !formattedSubjects?.find((subject) => subject.slug === params.subject_slug)
+  ) {
+    return (
+      <Error
+        message={`The subject ${params.subject_slug.replace(
+          /_/g,
+          " "
+        )} does not exist`}
+      />
+    );
+  }
   // if no references, return a message
   if (!references) {
     return (
@@ -89,7 +103,7 @@ const page = ({ params }) => {
         />
       )}
       {videoReferences && (
-        <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex flex-wrap gap-4">
           {videoReferences && (
             <h2 className="text-2xl font-semibold px-2">Video References</h2>
           )}

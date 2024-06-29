@@ -1,10 +1,19 @@
 import React from "react";
 import Link from "next/link";
+import posthog from "posthog-js";
 import Download from "./logo/Download";
 import Doc from "./logo/Doc";
+import { useToast } from "./ui/use-toast";
 import { motion } from "framer-motion";
-const NotesContainer = ({ name, url }) => {
+const NotesContainer = ({ name, url, created_by, subject }) => {
+  const { toast } = useToast();
   function downloadFile(url) {
+    posthog.capture("downloaded_file", {
+      url: url,
+      subject: subject,
+      created_by: created_by,
+      name: name,
+    });
     fetch(url)
       .then((response) => response.blob())
       .then((blob) => {
@@ -18,6 +27,10 @@ const NotesContainer = ({ name, url }) => {
         link.click();
         link.parentNode.removeChild(link);
       });
+    toast({
+      title: "Success",
+      description: "File downloaded successfully",
+    });
   }
   return (
     <motion.div

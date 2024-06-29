@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 import Pin from "@/components/logo/Pin";
 import Folder from "@/components/logo/Folder";
 import { useFetchSubjects } from "@/data/subject";
+import Error from "@/app/Error";
 import { useFetchFolders } from "@/data/folder";
 const page = ({ params }) => {
   const { data: subjects, error } = useFetchSubjects();
+
   const formattedSubjects = subjects?.map((subject) => ({
     name: subject.name,
     slug: subject.name.toLowerCase().replace(/\s+/g, "-"),
@@ -27,6 +29,19 @@ const page = ({ params }) => {
     slug: folder.name.toLowerCase().replace(/\s+/g, "-"),
     id: folder.id,
   }));
+  // if the current subject is not found, return a 404 page
+  if (
+    !formattedSubjects?.find((subject) => subject.slug === params.subject_slug)
+  ) {
+    return (
+      <Error
+        message={`The subject ${params.subject_slug.replace(
+          /_/g,
+          " "
+        )} does not exist`}
+      />
+    );
+  }
 
   // if no folders, return a message along with references
   if (!folders) {
@@ -86,7 +101,7 @@ const page = ({ params }) => {
             >
               <Folder dim={27} />
               <li key={folder.id}>{folder.name}</li>
-            </Link>{" "}
+            </Link>
           </motion.div>
         ))}
       </ul>

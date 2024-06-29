@@ -1,6 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "./ui/use-toast";
 import { useDeleteReferenceMutation } from "@/data/reference";
@@ -57,12 +68,32 @@ const ReferenceContainer = ({ role, name, url, id }) => {
     >
       <span className="px-2 py-2 overflow-x-auto font-semibold">{name}</span>{" "}
       {role === "admin" && (
-        <div
-          className="absolute aspect-square top-2 right-2 bg-red-500/50 text-white h-6 rounded-md cursor-pointer flex items-center justify-center"
-          onClick={handleDelete}
-        >
-          ✕
-        </div>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <div className="absolute aspect-square top-2 right-2 bg-red-500/50 text-white h-6 rounded-md cursor-pointer flex items-center justify-center">
+              ✕
+            </div>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Are you absolutely sure? Deleting {name}
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your
+                reference.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="border-white/10 focus-0">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       )}
       {youTubeVideoId && (
         <Link

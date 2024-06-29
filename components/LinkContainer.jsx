@@ -1,4 +1,15 @@
 import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useToast } from "./ui/use-toast";
 import { motion } from "framer-motion";
 import { useDeleteReferenceMutation } from "@/data/reference";
@@ -28,7 +39,7 @@ const LinkContainer = ({ role, name, url, id }) => {
 
   return (
     <motion.div
-      className=""
+      className="flex w-full  bg-secondary px-4 py-4 rounded-md border-[1.5px] border-white/10 ustify-center relative  hover:bg-base/25 transition-all"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
@@ -37,18 +48,38 @@ const LinkContainer = ({ role, name, url, id }) => {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-96 h-auto flex flex-col bg-secondary px-4 py-4 rounded-md border-[1.5px] border-white/10 ustify-center relative  hover:bg-base/25 transition-all"
+        className="w-full h-auto flex flex-col"
       >
         <span className="overflow-x-auto font-semibold">{name}</span>
-        {role === "admin" && (
-          <div
-            className="absolute aspect-square top-4 right-2 bg-red-500/50 text-white h-6 rounded-md cursor-pointer flex items-center justify-center"
-            onClick={handleDelete}
-          >
-            ✕
-          </div>
-        )}
       </Link>
+      {role === "admin" && (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <div className="z-10 aspect-square bg-red-500/50 text-white h-6 rounded-md cursor-pointer flex items-center justify-center">
+              ✕
+            </div>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Are you absolutely sure? Deleting {name}
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your
+                reference.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="border-white/10 focus-0">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </motion.div>
   );
 };

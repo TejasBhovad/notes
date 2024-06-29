@@ -17,6 +17,11 @@ import {
 import { Button } from "./ui/button";
 import Archive from "./logo/Archive";
 const SearchBar = () => {
+  const isMac =
+    typeof window !== "undefined"
+      ? navigator.userAgent.toUpperCase().indexOf("MAC") >= 0
+      : false;
+
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -42,6 +47,11 @@ const SearchBar = () => {
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
+  }, []);
+  const [isMounted, setIsMounted] = React.useState(false);
+  React.useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
   }, []);
 
   // when enter is pressed, navigate to the selected subject
@@ -101,16 +111,19 @@ const SearchBar = () => {
         onClick={() => setOpen(true)}
         className="w-full flex items-center justify-start bg-base text-white/85 border-[1.5px] border-white/5 font-medium text-md rounded-md py-1 px-2 hover:bg-white/5 hover:text-white/100 transition-all duration-200 ease-in-out"
       >
-        <p className="text-sm text-muted-foreground flex gap-2">
+        <p className="text-sm text-muted-foreground flex gap-1 sm:gap-2">
           Press
-          <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-white/10 text-white border-white/15 px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-            <span className="text-xs">⌘</span>J
+          <kbd className="hidden sm:flex pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-white/10 text-white border-white/15 px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+            <span className="text-xs">
+              {isMac && isMounted ? "⌘" : "Ctrl +"}
+            </span>
+            J
           </kbd>
           <span>to Search</span>
         </p>
       </Button>
 
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog open={open} onOpenChange={setOpen} isMobile="true">
         <CommandInput
           placeholder="Type a command or search..."
           serach={searchTerm}

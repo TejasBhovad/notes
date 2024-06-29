@@ -1,4 +1,5 @@
 "use client";
+import posthog from "posthog-js";
 import Profile from "@/components/auth/Profile";
 import SignIn from "@/components/auth/SignIn";
 import { getUserByEmail } from "@/src/queries";
@@ -26,6 +27,17 @@ const NavbarWrapper = ({ children }) => {
       });
     }
   }, [email]);
+  // identify user in posthog acc to user state
+  useEffect(() => {
+    if (user) {
+      posthog.identify(user.id, {
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      });
+    }
+  }, [user]);
+
   return (
     <div className="w-full h-full flex flex-col bg-base rounded-2xl">
       {/* if isMobile render mobile nav else nav */}
@@ -97,7 +109,7 @@ function MobileNavbar({ session, status, user }) {
           <PageSelector />
         </div>
       </div>
-      <div className="h-1/2 w-full flex items-center justify-between">
+      <div className="h-1/2 gap-1 w-full flex items-center justify-between">
         <SearchBar />
         {session && status === "authenticated" && (
           <Profile
