@@ -33,11 +33,18 @@ function Sidebar() {
   const { data, isLoading, isError, error } = useFetchSubjects();
   const transformedData =
     data &&
-    data.map((item) => ({
-      value: item.name.toLowerCase().replace(/\s/g, "-"),
-      label: item.name,
-      id: item.id,
-    }));
+    data
+      .map((item) => ({
+        value: item.name.toLowerCase().replace(/\s/g, "-"),
+        label: item.name,
+        id: item.id,
+      }))
+      .sort((a, b) => {
+        // Move the "Curriculum" subject to the front of the array
+        if (a.label.toLowerCase() === "curriculum") return -1;
+        if (b.label.toLowerCase() === "curriculum") return 1;
+        return 0;
+      });
   const isSmallScreen = useMediaQuery("(max-width: 640px)");
   return (
     <motion.nav

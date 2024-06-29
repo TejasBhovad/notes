@@ -31,6 +31,8 @@ const PageSelector = () => {
       router.push("/archived");
     } else if (page === "upload") {
       router.push("/upload");
+    } else if (page === "docs") {
+      router.push("https://tejasbhovad.github.io/docs/");
     }
   }
 
@@ -47,6 +49,7 @@ const PageSelector = () => {
       <SelectContent>
         <SelectItem value="explore">Explore</SelectItem>
         <SelectItem value="archived">Archived</SelectItem>
+        <SelectItem value="docs">&lt;docs&gt;</SelectItem>
         {/* <SelectItem value="upload">Upload</SelectItem> */}
       </SelectContent>
     </Select>

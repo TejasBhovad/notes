@@ -5,11 +5,18 @@ import Archive from "@/components/logo/Archive";
 import { useFetchSubjects } from "@/data/subject";
 const page = () => {
   const { data: subjects, error } = useFetchSubjects();
-  const formattedSubjects = subjects?.map((subject) => ({
-    name: subject.name,
-    slug: subject.name.toLowerCase().replace(/\s+/g, "-"),
-    id: subject.id,
-  }));
+  const formattedSubjects = subjects
+    ?.map((subject) => ({
+      name: subject.name,
+      slug: subject.name.toLowerCase().replace(/\s+/g, "-"),
+      id: subject.id,
+    }))
+    .sort((a, b) => {
+      // Move the "Curriculum" subject to the front of the array
+      if (a.name.toLowerCase() === "curriculum") return -1;
+      if (b.name.toLowerCase() === "curriculum") return 1;
+      return 0;
+    });
   return (
     <div className="w-full h-full flex flex-col gap-4 p-4">
       <h1 className="text-2xl font-bold">Subjects</h1>
@@ -22,7 +29,7 @@ const page = () => {
           >
             <div className="w-full flex flex-row justify-between items-center">
               <span className="text-xl font-semibold">{subject.name}</span>
-              <span className="text-sm text-gray-500">View</span>
+              <span className="text-sm text-gray-400">View</span>
             </div>
           </Link>
         ))}

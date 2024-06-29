@@ -60,14 +60,20 @@ const SearchBar = () => {
       if (e.key === "Enter") {
         e.preventDefault();
         console.log("Enter Pressed", value);
-        const slug = value.replace(/\s+/g, "-").toLowerCase();
-        // if starts with http, open in new tab
-        if (value.startsWith("http")) {
-          window.open(value, "_blank");
+        // Check if value is / to go to home page
+        if (value === "/") {
+          router.push("/");
+          setOpen(false);
         } else {
-          router.push(`/${slug}`);
+          const slug = value.replace(/\s+/g, "-").toLowerCase();
+          // if starts with http, open in new tab
+          if (value.startsWith("http")) {
+            window.open(value, "_blank");
+          } else {
+            router.push(`/${slug}`);
+          }
+          setOpen(false);
         }
-        setOpen(false);
       }
     };
     document.addEventListener("keydown", down);
@@ -111,9 +117,9 @@ const SearchBar = () => {
         onClick={() => setOpen(true)}
         className="w-full flex items-center justify-start bg-base text-white/85 border-[1.5px] border-white/5 font-medium text-md rounded-md py-1 px-2 hover:bg-white/5 hover:text-white/100 transition-all duration-200 ease-in-out"
       >
-        <p className="text-sm text-muted-foreground flex gap-1 sm:gap-2">
+        <p className="text-sm flex gap-1 sm:gap-2 text-white/85 ">
           Press
-          <kbd className="hidden sm:flex pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-white/10 text-white border-white/15 px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+          <kbd className="hidden sm:flex pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-white/10 text-white border-white/15 px-1.5 font-mono text-[10px] font-medium opacity-100">
             <span className="text-xs">
               {isMac && isMounted ? "⌘" : "Ctrl +"}
             </span>

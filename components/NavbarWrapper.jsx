@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import SearchBar from "@/components/SearchBar";
 import { useMediaQuery } from "@/lib/media";
 import NotesButton from "./NotesButton";
+import Link from "next/link";
 const NavbarWrapper = ({ children }) => {
   const isMobile = useMediaQuery("(max-width: 640px)");
   const { data: session, status } = useSession();
@@ -69,7 +70,13 @@ function Navbar({ session, status, user }) {
       <div className="w-full">
         <SearchBar />
       </div>
-      <div className="">
+      <div className="flex gap-3">
+        <Link
+          href="https://tejasbhovad.github.io/docs/"
+          className="w-auto px-4 h-full flex items-center justify-center bg-secondary text-white/85 font-semibold rounded-md hover:bg-white/5 hover:text-white/100 transition-all duration-200 ease-in-out border-[1.5px] border-white/10"
+        >
+          &lt;docs&gt;
+        </Link>
         {status === "loading" && <span>Loading...</span>}
         {session && status === "authenticated" && (
           <>

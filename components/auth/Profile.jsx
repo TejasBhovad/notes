@@ -2,6 +2,8 @@ import Image from "next/image";
 import SignOut from "@/components/auth/SignOut";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Upload from "../logo/Upload";
+import Manage from "../logo/Manage";
 import {
   Popover,
   PopoverContent,
@@ -40,17 +42,19 @@ const Profile = ({ image, name, role = "student", isMobile = false }) => {
           )}
         </div>
       </PopoverTrigger>
-      <PopoverContent className="text-sm bg-secondary text-white border-white/15 flex flex-col gap-2">
+      <PopoverContent className="text-sm bg-secondary text-white border-white/15 flex flex-col gap-2 w-auto">
         {role === "admin" && (
           <Link href="/upload">
-            <Button className="w-full text-center font-medium bg-base border-[1.5px] border-white/5 hover:bg-white/5">
+            <Button className="w-full px-8 text-left font-medium bg-base border-[1.5px] border-white/5 hover:bg-white/5 flex gap-2 justify-start">
+              <Upload />
               Upload
             </Button>
           </Link>
         )}
         {role === "admin" && (
           <Link href="/manage">
-            <Button className="w-full text-center font-medium bg-base border-[1.5px] border-white/5 hover:bg-white/5">
+            <Button className="w-full px-8 text-left font-medium bg-base border-[1.5px] border-white/5 hover:bg-white/5 flex gap-2 justify-start">
+              <Manage />
               Manage
             </Button>
           </Link>
