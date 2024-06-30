@@ -11,7 +11,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
-import { Description } from "@radix-ui/react-dialog";
+import { updateSubjectLastUpdated } from "@/src/queries";
 
 const UploadPage = ({ session, user }) => {
   const { toast } = useToast();
@@ -98,6 +98,7 @@ const UploadPage = ({ session, user }) => {
       title: "✅ Success",
       description: "Note created successfully",
     });
+    updateSubjectLastUpdated(selectedSubjectId);
     setFiles([]);
     setName("");
     setUrl("");

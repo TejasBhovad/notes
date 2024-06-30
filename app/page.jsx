@@ -1,4 +1,5 @@
 "use client";
+import { formatDistance } from "date-fns";
 import React from "react";
 import Link from "next/link";
 import Archive from "@/components/logo/Archive";
@@ -10,6 +11,7 @@ const page = () => {
       name: subject.name,
       slug: subject.name.toLowerCase().replace(/\s+/g, "-"),
       id: subject.id,
+      last_updated: subject.updated_at,
     }))
     .sort((a, b) => {
       // Move the "Curriculum" subject to the front of the array
@@ -29,7 +31,12 @@ const page = () => {
           >
             <div className="w-full flex flex-row justify-between items-center">
               <span className="text-xl font-semibold">{subject.name}</span>
-              <span className="text-sm text-gray-400">View</span>
+              <span className="text-sm text-gray-400/50">
+                Updated{" "}
+                {formatDistance(new Date(subject.last_updated), new Date(), {
+                  addSuffix: true,
+                })}
+              </span>
             </div>
           </Link>
         ))}

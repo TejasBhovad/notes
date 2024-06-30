@@ -6,7 +6,11 @@ import { useFetchFolders } from "@/data/folder";
 import { useFetchSubjects } from "@/data/subject";
 import { useFetchNotes } from "@/data/notes";
 const page = ({ params }) => {
-  const { data: subjects, error } = useFetchSubjects();
+  const {
+    data: subjects,
+    isLoading: subjectLoading,
+    error,
+  } = useFetchSubjects();
   const formattedSubjects = subjects?.map((subject) => ({
     name: subject.name,
     slug: subject.name.toLowerCase().replace(/\s+/g, "-"),
@@ -17,7 +21,11 @@ const page = ({ params }) => {
     formattedSubjects.find((subject) => subject.slug === params.subject_slug)
       ?.id;
 
-  const { data: folders, error: folderError } = useFetchFolders(subject_id);
+  const {
+    data: folders,
+    isLoading,
+    error: folderError,
+  } = useFetchFolders(subject_id);
 
   const formattedFolders = folders?.map((folder) => ({
     name: folder.name,
@@ -33,6 +41,8 @@ const page = ({ params }) => {
 
   // if the current subject is not found, return a 404 page
   if (
+    !subjectLoading &&
+    !isLoading &&
     !formattedSubjects?.find((subject) => subject.slug === params.subject_slug)
   ) {
     return (
@@ -46,7 +56,11 @@ const page = ({ params }) => {
   }
 
   // if the current folder is not found, return a 404 page
-  if (!formattedFolders?.find((folder) => folder.slug === params.folder_slug)) {
+  if (
+    !subjectLoading &&
+    !isLoading &&
+    !formattedFolders?.find((folder) => folder.slug === params.folder_slug)
+  ) {
     return (
       <Error
         message={`The folder ${params.folder_slug.replace(
@@ -79,6 +93,7 @@ const page = ({ params }) => {
           key={note.id}
           name={note.name}
           url={note.url}
+          created_at={note.created_at}
           created_by={note.user_id}
           subject={params.subject_slug}
         />

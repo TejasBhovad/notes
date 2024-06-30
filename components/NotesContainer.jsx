@@ -5,7 +5,8 @@ import Download from "./logo/Download";
 import Doc from "./logo/Doc";
 import { useToast } from "./ui/use-toast";
 import { motion } from "framer-motion";
-const NotesContainer = ({ name, url, created_by, subject }) => {
+import { formatDistance } from "date-fns";
+const NotesContainer = ({ name, url, created_by, subject, created_at }) => {
   const { toast } = useToast();
   function downloadFile(url) {
     posthog.capture("downloaded_file", {
@@ -39,13 +40,21 @@ const NotesContainer = ({ name, url, created_by, subject }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
     >
-      <Link className="items-center gap-4 w-full flex" href={url}>
-        <Doc size={27} />
-        <p>{name}</p>
+      <Link className="items-center gap-3 w-full flex flex-col" href={url}>
+        <div className="items-center gap-4 w-full flex">
+          <Doc size={27} />
+          <p>{name}</p>
+        </div>
+        <span className="text-white/25 text-xs text-left justify-start flex w-full">
+          Created{" "}
+          {formatDistance(new Date(created_at), new Date(), {
+            addSuffix: true,
+          })}
+        </span>
       </Link>
       <button
         onClick={() => downloadFile(url)}
-        className="h-full aspect-square p-1 rounded-md bg-white/5 hover:bg-white/10 border-[1.5px] border-white/10 hover:border-white/20 transition-colors"
+        className="h-8 aspect-square p-1 rounded-md bg-white/5 hover:bg-white/10 border-[1.5px] border-white/10 hover:border-white/20 transition-colors flex items-center justify-center"
       >
         <Download />
       </button>

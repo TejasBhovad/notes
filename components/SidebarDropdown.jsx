@@ -26,11 +26,14 @@ const SidebarDropdown = ({ name, id, subject_slug }) => {
       open={isOpen}
       onOpenChange={setIsOpen}
     >
-      <div className="text-left text-xs px-1 font-semibold uppercase text-white/50 flex gap-2 items-center">
-        <Link href={`/${subject_slug}`}>
+      <div className="w-full text-left text-xs pl-1 font-semibold uppercase text-white/50 flex gap-2 items-center">
+        <Link
+          href={`/${subject_slug}`}
+          className="w-full h-full flex items-center"
+        >
           <span className="w-full text-nowrap">{name}</span>
         </Link>
-        <CollapsibleTrigger>
+        <CollapsibleTrigger className="">
           <motion.div
             animate={{
               rotate: isOpen ? 180 : 0,
@@ -77,6 +80,9 @@ const SidebarDropdown = ({ name, id, subject_slug }) => {
           )}
         </AnimatePresence>
       </CollapsibleContent>
+      {name === "Curriculum" && (
+        <div className="my-0 border-b border-white/10 w-full"></div>
+      )}
     </Collapsible>
   );
 };

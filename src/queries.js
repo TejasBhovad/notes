@@ -3,6 +3,39 @@ import db from "@/src/db.js";
 import { users, subjects, references, notes, folders } from "@/src/schema.js";
 import { asc, eq } from "drizzle-orm";
 import { ilike } from "drizzle-orm";
+
+// update last updated date to now for a subject
+export const updateSubjectLastUpdated = async (subject_id) => {
+  const updatedSubject = await db
+    .update(subjects)
+    .set({
+      updated_at: new Date(),
+    })
+    .where(eq(subjects.id, subject_id));
+  return updatedSubject;
+};
+
+// update last updated date to now for a folder
+export const updateFolderLastUpdated = async (folder_id) => {
+  const updatedFolder = await db
+    .update(folders)
+    .set({
+      updated_at: new Date(),
+    })
+    .where(eq(folders.id, folder_id));
+  return updatedFolder;
+};
+
+// update lat updated date for a reference
+export const updateReferenceLastUpdated = async (reference_id) => {
+  const updatedReference = await db
+    .update(references)
+    .set({
+      updated_at: new Date(),
+    })
+    .where(eq(references.id, reference_id));
+  return updatedReference;
+};
 // USER
 export const createUser = async ({
   name,
@@ -78,6 +111,7 @@ export const createReference = async ({
       url,
       user_id,
     });
+    updateSubjectLastUpdated(subject_id);
     return reference;
   } catch (error) {
     console.error(error);
@@ -94,7 +128,7 @@ export const createFolder = async ({ name, subject_id, user_id }) => {
       subject_id,
       user_id,
     });
-
+    updateSubjectLastUpdated(subject_id);
     return folder;
   } catch (error) {
     console.error(error);
@@ -119,6 +153,7 @@ export const createNote = async ({
       folder_id,
       include_global,
     });
+    updateFolderLastUpdated(folder_id);
     return note;
   } catch (error) {
     console.error(error);
