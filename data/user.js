@@ -6,6 +6,8 @@ import {
   fetchFoldersByUser,
   fetchReferencesByUser,
   fetchNotesByUser,
+  updateRecentlyViewed,
+  getUserByEmail,
 } from "@/src/queries";
 import { useQueryClient } from "@tanstack/react-query";
 export function useCreateUserMutation() {
@@ -54,6 +56,32 @@ export function useFetchNotesByUser(user_id) {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["notes", user_id],
     queryFn: async () => await fetchNotesByUser(user_id),
+  });
+
+  return { data, isLoading, isError, error };
+}
+
+export function useUpdateRecentlyViewedMutation() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: updateRecentlyViewed,
+    onSuccess: (data) => {
+      console.log("Recently viewed updated successfully", data);
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+    onError: (error) => {
+      console.error("Error updating recently viewed", error);
+    },
+  });
+
+  return mutation;
+}
+
+export function useGetUserByEmail(email) {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["user", email],
+    queryFn: async () => await getUserByEmail(email),
+    enabled: !!email,
   });
 
   return { data, isLoading, isError, error };

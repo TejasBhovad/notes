@@ -1,11 +1,17 @@
 "use client";
 import Error from "@/app/Error";
 import React from "react";
+import { useState, useEffect } from "react";
 import NotesContainer from "@/components/NotesContainer";
 import { useFetchFolders } from "@/data/folder";
 import { useFetchSubjects } from "@/data/subject";
 import { useFetchNotes } from "@/data/notes";
+import { useSession } from "next-auth/react";
+import { getUserByEmail } from "@/src/queries";
 const page = ({ params }) => {
+  const { data: session, status } = useSession();
+  const [user, setUser] = useState(null);
+  const [email, setEmail] = useState("");
   const {
     data: subjects,
     isLoading: subjectLoading,
@@ -38,6 +44,14 @@ const page = ({ params }) => {
     formattedFolders.find((folder) => folder.slug === params.folder_slug)?.id;
 
   const { data: notes, error: notesError } = useFetchNotes(folder_id);
+
+  useEffect(() => {
+    if (session) {
+      getUserByEmail(session.user.email).then((res) => {
+        setUser(res[0]);
+      });
+    }
+  }, [session]);
 
   // if the current subject is not found, return a 404 page
   if (
@@ -96,6 +110,8 @@ const page = ({ params }) => {
           created_at={note.created_at}
           created_by={note.user_id}
           subject={params.subject_slug}
+          //  if user,id user_id=user.id else -1
+          user_id={user ? user.id : -1}
         />
       ))}
     </div>

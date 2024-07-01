@@ -21,9 +21,7 @@ Simple WebApp to aggregate notes in one place
 
 ## Todo:
 
-- Custom PDF viewer if possible
-- small bug fixes
-- (suggestions welcome)
+[moved to project documentation]
 
 ## Steps to Run locally
 

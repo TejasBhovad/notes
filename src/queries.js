@@ -43,9 +43,18 @@ export const createUser = async ({
   image,
   role = "user",
   subscribed_to = [],
+  recently_viewed = [],
 }) => {
   try {
-    console.log("creating user", name, email, image, role, subscribed_to);
+    console.log(
+      "creating user",
+      name,
+      email,
+      image,
+      role,
+      subscribed_to,
+      recently_viewed
+    );
     const user = await db
       .insert(users)
       .values({
@@ -62,6 +71,55 @@ export const createUser = async ({
     return null;
   }
 };
+
+export const updateRecentlyViewed = async ({ user_id, recentlyViewed }) => {
+  // Ensure user_id is an integer
+  const userId = typeof user_id === "string" ? parseInt(user_id, 10) : user_id;
+
+  // First, fetch the user
+  const user = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, userId))
+    .execute();
+  console.log("user", user);
+  if (!user || user.length === 0) {
+    throw new Error("User not found");
+  }
+
+  // Extract the existing recently_viewed items
+  const existingItems = user[0].recently_viewed || [];
+  // console.log("existingItems", existingItems);
+  // Check if the recently viewed item already exists
+  const itemIndex = existingItems.findIndex(
+    (item) =>
+      item.type === recentlyViewed.type && item.url === recentlyViewed.url
+  );
+
+  let updatedRecentlyViewed;
+  if (itemIndex === -1) {
+    // Item doesn't exist, add it to the beginning of the array
+    updatedRecentlyViewed = [recentlyViewed, ...existingItems.slice(0, 4)];
+  } else {
+    // Item exists, remove it from the current position and add it to the beginning
+    updatedRecentlyViewed = [
+      recentlyViewed,
+      ...existingItems.slice(0, itemIndex),
+      ...existingItems.slice(itemIndex + 1, 5),
+    ].slice(0, 5);
+  }
+
+  // Update the user record
+  await db
+    .update(users)
+    .set({
+      recently_viewed: updatedRecentlyViewed,
+      updated_at: new Date(), // Update the updated_at timestamp
+    })
+    .where(eq(users.id, userId))
+    .execute();
+};
+
 export const getUserByEmail = async (email) => {
   console.log("fetching user by email", email);
   const user = await db
