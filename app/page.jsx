@@ -30,7 +30,7 @@ const page = () => {
     });
 
   return (
-    <div className="w-full h-full flex flex-col gap-5 p-4">
+    <div className="w-full h-[85vh] overflow-y-auto flex flex-col gap-8 p-4">
       <div className="w-full h-auto flex flex-col gap-2">
         <h1 className="text-2xl font-bold">Subjects</h1>
         <div className="flex flex-col gap-3 w-full h-auto">
@@ -42,8 +42,8 @@ const page = () => {
             >
               <div className="w-full flex flex-row justify-between items-center">
                 <span className="text-xl font-semibold">{subject.name}</span>
-                <span className="text-sm text-textMuted">
-                  Updated{" "}
+                <span className="text-xs text-textMuted flex capitalize gap-1">
+                  <span className="hidden sm:flex">Updated </span>
                   {formatDistance(new Date(subject.last_updated), new Date(), {
                     addSuffix: true,
                   })}

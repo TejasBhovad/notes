@@ -107,8 +107,8 @@ const page = ({ params }) => {
                 <li key={folder.id}>{folder.name}</li>
               </div>
 
-              <span className="text-sm text-textMuted px-2">
-                Updated{" "}
+              <span className="text-xs text-textMuted px-2 capitalize flex gap-1">
+                <span className="hidden sm:flex">Updated </span>
                 {formatDistance(new Date(folder.last_updated), new Date(), {
                   addSuffix: true,
                 })}
