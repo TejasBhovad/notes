@@ -28,7 +28,11 @@ const page = ({ params }) => {
     }
   }, [email]);
   const subjectName = params.subject_slug;
-  const { data: subjects, error } = useFetchSubjects();
+  const {
+    data: subjects,
+    isLoading: subjectLoading,
+    error,
+  } = useFetchSubjects();
   const formattedSubjects = subjects?.map((subject) => ({
     name: subject.name,
     slug: subject.name.toLowerCase().replace(/\s+/g, "-"),
@@ -42,7 +46,7 @@ const page = ({ params }) => {
 
   const {
     data: references,
-    isLoading,
+    isLoading: referenceLoading,
     error: referenceError,
   } = useFetchReferences(subject_id);
 
@@ -54,6 +58,7 @@ const page = ({ params }) => {
   );
   // if the current subject is not found, return a 404 page
   if (
+    !subjectLoading &&
     !formattedSubjects?.find((subject) => subject.slug === params.subject_slug)
   ) {
     return (
@@ -66,7 +71,7 @@ const page = ({ params }) => {
     );
   }
   // if no references, return a message
-  if (!references) {
+  if (!references && !referenceLoading && !subjectLoading) {
     return (
       <div className="p-4 flex flex-col gap-6">
         <span>

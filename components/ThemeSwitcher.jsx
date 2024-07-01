@@ -39,7 +39,7 @@ const ThemeSwitcher = ({ isMobile }) => {
   }
 
   return (
-    <div className="bg-util/50 h-full aspect-square rounded-full flex items-center justify-center hover:bg-primary/20 transition-all">
+    <div className="bg-util/50 h-full aspect-square rounded-full flex items-center justify-center hover:bg-util/100 transition-all">
       {isMounted && (
         <>
           {theme === "dark" ? (

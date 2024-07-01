@@ -43,7 +43,11 @@ const page = ({ params }) => {
     formattedFolders &&
     formattedFolders.find((folder) => folder.slug === params.folder_slug)?.id;
 
-  const { data: notes, error: notesError } = useFetchNotes(folder_id);
+  const {
+    data: notes,
+    isLoading: notesLoading,
+    error: notesError,
+  } = useFetchNotes(folder_id);
 
   useEffect(() => {
     if (session) {
@@ -86,12 +90,14 @@ const page = ({ params }) => {
   }
 
   // if no notes, return a message
-  if (!notes) {
+  if (!notes && !notesLoading && !isLoading && !subjectLoading) {
     return (
       <div className="p-4 flex flex-col gap-6">
+        <h1 className="text-2xl font-semibold capitalize">
+          {params.folder_slug.replace(/_/g, " ")}
+        </h1>
         <span>
-          <h1 className="text-3xl font-semibold">Notes</h1>
-          <span className="uppercase text-sm font-semibold text-textMuted">
+          <span className="uppercase text-sm font-semibold text-danger">
             No notes found
           </span>
         </span>

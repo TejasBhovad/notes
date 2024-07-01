@@ -24,7 +24,11 @@ const page = ({ params }) => {
     formattedSubjects.find((subject) => subject.slug === params.subject_slug)
       ?.name;
 
-  const { data: folders, error: folderError } = useFetchFolders(subject_id);
+  const {
+    data: folders,
+    isLoading: folderLoading,
+    error: folderError,
+  } = useFetchFolders(subject_id);
   const formattedFolders = folders?.map((folder) => ({
     name: folder.name,
     slug: folder.name.toLowerCase().replace(/\s+/g, "-"),
@@ -47,7 +51,7 @@ const page = ({ params }) => {
   }
 
   // if no folders, return a message along with references
-  if (!folders) {
+  if (!folders && !folderLoading && !isLoading) {
     return (
       <div className="p-4 flex flex-col gap-6">
         <h1 className="text-2xl font-semibold capitalize">
