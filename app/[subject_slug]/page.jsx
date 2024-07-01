@@ -55,12 +55,12 @@ const page = ({ params }) => {
           {params.subject_slug.replace(/_/g, " ")}
         </h1>
         <span>
-          <span className="uppercase text-sm font-semibold text-white/50">
+          <span className="uppercase text-sm font-semibold text-danger">
             No folders found
           </span>
         </span>
         <Link
-          className="w-48 flex gap-2 bg-white/5 hover:bg-white/10 transition-all items-center justify-start px-2 py-2 rounded-sm font-medium text-lg"
+          className="w-48 flex gap-2 bg-util hover:bg-border transition-all items-center justify-start px-2 py-2 rounded-sm font-medium text-lg"
           href={`/${params.subject_slug}/reference`}
         >
           <Pin dim={27} />
@@ -82,7 +82,7 @@ const page = ({ params }) => {
           transition={{ duration: 0.25, delay: 0.3 }}
         >
           <Link
-            className="w-full flex gap-2 bg-white/5 hover:bg-white/10 transition-all items-center justify-start px-2 py-2 rounded-sm font-medium text-lg"
+            className="w-full flex gap-2 bg-util hover:bg-border transition-all items-center justify-start px-2 py-2 rounded-sm font-medium text-lg"
             href={`/${params.subject_slug}/reference`}
           >
             <Pin dim={27} />
@@ -98,7 +98,7 @@ const page = ({ params }) => {
             transition={{ duration: 0.25 }}
           >
             <Link
-              className="w-full flex gap-2 bg-white/5 hover:bg-white/10 transition-all items-center justify-between px-2 py-2 rounded-sm font-medium text-lg"
+              className="w-full flex gap-2 bg-util hover:bg-border transition-all items-center justify-between px-2 py-2 rounded-sm font-medium text-lg"
               href={`/${params.subject_slug}/${folder.slug}`}
               key={folder.id}
             >
@@ -107,7 +107,7 @@ const page = ({ params }) => {
                 <li key={folder.id}>{folder.name}</li>
               </div>
 
-              <span className="text-sm text-gray-400/50 px-2">
+              <span className="text-sm text-textMuted px-2">
                 Updated{" "}
                 {formatDistance(new Date(folder.last_updated), new Date(), {
                   addSuffix: true,

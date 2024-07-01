@@ -144,9 +144,9 @@ const UploadPage = ({ session, user }) => {
             : ""
         }`}
       >
-        <div className="w-full h-full border border-white/50 rounded-md border-dashed">
+        <div className="w-full h-full border border-border rounded-md border-dashed">
           <UploadDropzone
-            className="h-full w-full ut-button:bg-primary/75 ut-button:p-0 ut-button:text-sm ut-button:h-8 ut-label:text-primary/75 ut-label:text-sm ut-label:font-semibold ut-upload-icon:text-white/75 ut-button:ut-readying:bg-primary/50 ut-button:ut-uploading:bg-white/50 ut-button:ut-uploading::after:bg-white"
+            className="h-full w-full ut-button:bg-primary/75 ut-button:p-0 ut-button:text-sm ut-button:h-8 ut-label:text-primary/75 ut-label:text-sm ut-label:font-semibold ut-upload-icon:text-text/75 ut-button:ut-readying:bg-primary/50 ut-button:ut-uploading:bg-util/50 ut-button:ut-uploading::after:bg-util"
             endpoint="pdfUploader"
             onClientUploadComplete={(res) => {
               console.log("Files: ", res);
@@ -200,14 +200,14 @@ const UploadPage = ({ session, user }) => {
       </div>
       {files.length > 0 && (
         <div className="flex py-4 flex-col gap-1">
-          <span className="text-xs font-bold px-1 text-white/50">NAME</span>
+          <span className="text-xs font-bold px-1 text-text/50">NAME</span>
           <Input
             type="text"
             // default value to file name w.o pdf
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Name"
-            className="p-2 border border-gray-300/10 rounded text-white"
+            className="p-2 border border-border rounded text-white"
           />
         </div>
       )}
@@ -215,7 +215,7 @@ const UploadPage = ({ session, user }) => {
       <Button
         disabled={files.length === 0}
         onClick={createNewSubject}
-        className="p-2 bg-primary/15 border-[1.5px] border-primary/25 text-white rounded hover:bg-primary/25 hover:text-white"
+        className="p-2 bg-primary/15 border-[1.5px] border-border text-text rounded hover:bg-primary/25 hover:text-text"
       >
         Create Note
       </Button>

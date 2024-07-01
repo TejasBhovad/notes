@@ -81,7 +81,7 @@ const ManagePage = () => {
               <div className="w-full flex gap-2">
                 <Button
                   key={folder.id}
-                  className="bg-white/5 p-2 rounded-md w-full"
+                  className="bg-util p-2 rounded-md w-full"
                   // onlick should set selectedFolderId and selectedFolder
                   onClick={() => {
                     setSelectedFolderId(folder.id);
@@ -92,7 +92,7 @@ const ManagePage = () => {
                 </Button>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="outline" className="border-white/10">
+                    <Button variant="outline" className="border-border">
                       <Delete className="h-4 w-4" />
                     </Button>
                   </AlertDialogTrigger>

@@ -38,11 +38,11 @@ const page = () => {
             <Link
               key={subject.id}
               href={`/${subject.slug}`}
-              className="h-24 bg-white/5 hover:bg-white/10 transition-all ease-in-out duration-300 px-5 rounded-md shadow-md w-full flex items-center justify-between"
+              className="h-24 bg-util/50 hover:bg-border/50 transition-all ease-in-out duration-300 px-5 rounded-md shadow-md w-full flex items-center justify-between"
             >
               <div className="w-full flex flex-row justify-between items-center">
                 <span className="text-xl font-semibold">{subject.name}</span>
-                <span className="text-sm text-gray-400/50">
+                <span className="text-sm text-textMuted">
                   Updated{" "}
                   {formatDistance(new Date(subject.last_updated), new Date(), {
                     addSuffix: true,
@@ -53,17 +53,17 @@ const page = () => {
           ))}
           <Link
             href={`/archived`}
-            className="h-24 bg-white/5 hover:bg-white/10 transition-all ease-in-out duration-300 px-5 rounded-md shadow-md w-full flex items-center justify-between"
+            className="h-24 bg-util hover:bg-border transition-all ease-in-out duration-300 px-5 rounded-md shadow-md w-full flex items-center justify-between"
           >
             <div className="w-full flex flex-row justify-between items-center">
-              <div className="flex gap-2 items-center text-white/50">
+              <div className="flex gap-2 items-center text-text">
                 <Archive dim={27} />
-                <span className="text-xl font-semibold text-white/50">
+                <span className="text-xl font-semibold text-text">
                   Archived Subjects
                 </span>
               </div>
 
-              <span className="text-sm text-gray-500">View</span>
+              <span className="text-sm text-textMuted">View</span>
             </div>
           </Link>
         </div>

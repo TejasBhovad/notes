@@ -2,9 +2,7 @@
 import { useEffect } from "react";
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
-import { useCreateFolderMutation } from "@/data/folder";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -21,7 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const FolderSelector = ({
+const FolderFinder = ({
   selectedFolder,
   setSelectedFolder,
   folders,
@@ -45,12 +43,12 @@ const FolderSelector = ({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild disabled={!selectedSubjectId}>
+      <PopoverTrigger asChild disabled={!selectedSubjectId} className="bg-util">
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="md:w-[200px] w-1/2 justify-between border-[1.5px] border-white/10 hover:bg-white/5 hover:text-white"
+          className="md:w-[200px] w-1/2 justify-between border-[1.5px] border-border hover:bg-util hover:text-text bg-util text-text"
           onClick={() => setOpen((prev) => !prev)}
         >
           {value
@@ -94,4 +92,4 @@ const FolderSelector = ({
   );
 };
 
-export default FolderSelector;
+export default FolderFinder;

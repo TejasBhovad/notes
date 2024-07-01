@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
-
+import ThemeSwitcher from "./ThemeSwitcher";
 const PageSelector = () => {
   const router = useRouter();
 
@@ -43,13 +43,14 @@ const PageSelector = () => {
       defaultValue="explore"
       placeholder="Explore"
     >
-      <SelectTrigger className="w-32 bg-secondary border-[1.5px] border-white/10">
+      <SelectTrigger className="w-32 bg-secondary border-[1.5px] border-border">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="explore">Explore</SelectItem>
         <SelectItem value="archived">Archived</SelectItem>
         <SelectItem value="docs">&lt;docs&gt;</SelectItem>
+        <ThemeSwitcher isMobile={true} />
         {/* <SelectItem value="upload">Upload</SelectItem> */}
       </SelectContent>
     </Select>

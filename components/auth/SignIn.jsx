@@ -9,7 +9,7 @@ const SignIn = () => {
   };
   return (
     <Button
-      className="sm:w-full w-24 bg-secondary border-[1.5px] border-white/10 hover:bg-white/5 font-semibold text-md "
+      className="sm:w-full w-24 bg-secondary border-[1.5px] border-border hover:bg-utility font-semibold text-md "
       onClick={handleSignIn}
     >
       Sign in

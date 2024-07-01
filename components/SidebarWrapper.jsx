@@ -8,11 +8,11 @@ import NotesButton from "@/components/NotesButton";
 
 const SidebarWrapper = ({ children }) => {
   return (
-    <div className="w-full h-full bg-base">
+    <div className="sidebar-wrapper w-full min-h-screen bg-base">
       <Sidebar />
-      <main className="w-full h-full flex flex-col sm:pl-48">
+      <main className="w-full h-screen min-h-full flex flex-col sm:pl-48">
         <motion.div
-          className="w-full h-full bg-secondary"
+          className="w-full bg-secondary h-full min-h-full"
           variants={{
             hidden: { x: -196 },
             visible: { x: 0 },

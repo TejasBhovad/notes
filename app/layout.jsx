@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import SidebarWrapper from "@/components/SidebarWrapper";
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
 import { Suspense } from "react";
 import PostHogPageView from "./PostHogPageView";
 import { Toaster } from "@/components/ui/toaster";
@@ -20,7 +21,7 @@ export default function RootLayout({ children }) {
   return (
     <AuthProvider>
       <ReactQueryClientProvider>
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
           <head>
             <link
               rel="apple-touch-icon"
@@ -48,6 +49,7 @@ export default function RootLayout({ children }) {
             <meta name="msapplication-TileColor" content="#F992FF" />
             <meta name="theme-color" content="#333333" />
           </head>
+
           <CSPostHogProvider>
             <body className={inter.className}>
               <Suspense fallback={null}>
@@ -61,8 +63,10 @@ export default function RootLayout({ children }) {
                  * as if you were to fetch `/api/uploadthing` directly.
                  */
                 routerConfig={extractRouterConfig(ourFileRouter)}
-              />
-              <SidebarWrapper>{children}</SidebarWrapper>
+              />{" "}
+              <ThemeProvider>
+                <SidebarWrapper>{children}</SidebarWrapper>
+              </ThemeProvider>
               <Toaster />
             </body>
           </CSPostHogProvider>

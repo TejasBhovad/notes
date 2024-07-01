@@ -7,7 +7,7 @@ const SignOut = () => {
   };
   return (
     <Button
-      className="w-full bg-red-800/50 border-[1.5px] border-white/10 hover:bg-red-500/50 font-semibold text-md "
+      className="w-full bg-danger border-[1.5px] border-dangerMuted hover:bg-dangerMuted font-semibold text-md text-white"
       onClick={handleSignOut}
     >
       Sign out

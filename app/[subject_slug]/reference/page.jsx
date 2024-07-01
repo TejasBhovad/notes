@@ -71,11 +71,11 @@ const page = ({ params }) => {
       <div className="p-4 flex flex-col gap-6">
         <span>
           <h1 className="text-3xl font-semibold">References</h1>
-          <span className="uppercase text-sm font-semibold text-white/50">
+          <span className="uppercase text-sm font-semibold text-textMuted">
             {subjectName.replace(/-/g, " ")}
           </span>
           <span>
-            <h2 className="text-md font-regular text-red-400/40 py-2">
+            <h2 className="text-md font-regular text-danger py-2">
               No references found
             </h2>
           </span>
@@ -85,11 +85,11 @@ const page = ({ params }) => {
   }
 
   return (
-    <div className="p-4 flex flex-col gap-6">
+    <div className="p-4 flex flex-col gap-6 h-[85vh] overflow-y-auto">
       {formattedSubjects && (
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl font-semibold">References</h1>
-          <span className="uppercase text-sm font-semibold text-white/50">
+          <span className="uppercase text-sm font-semibold text-textMuted">
             {subjectName.replace(/-/g, " ")}
           </span>
         </div>

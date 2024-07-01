@@ -4,65 +4,86 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    /* Your default theme */
+    --color-background-base: 199, 209, 219;
+    --color-background-secondary: 222, 228, 234;
+    --color-primary: 218, 98, 172;
+    --color-primary-muted: 247, 151, 210;
+    --color-text: 16, 18, 20;
+    --color-text-muted: 22, 26, 29;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --color-danger: 241, 91, 80;
+    --color-danger-muted: 248, 113, 104;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
+    --color-border: 159, 173, 188;
 
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
+    --color-util: 182, 194, 207;
 
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
+    /* width */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
 
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #dee4ea;
+    }
 
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #c9c9c9;
+      transition: background 0.2s;
+      width: 6px;
+    }
 
-    --destructive: 0 50% 45%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-
-    --radius: 0.5rem;
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #898989;
+      transition: background 0.2s;
+    }
   }
 
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
+  [data-theme="dark"] {
+    --color-background-base: 22, 26, 29;
+    --color-background-secondary: 16, 18, 20;
+    --color-primary: 205, 81, 157;
+    --color-primary-muted: 148, 61, 115;
+    --color-text: 222, 228, 234;
+    --color-text-muted: 199, 209, 219;
 
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --color-danger: 174, 46, 36;
+    --color-danger-muted: 93, 31, 26;
 
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --color-border: 34, 39, 43;
 
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --color-util: 29, 33, 37;
 
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
+    /* width */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
 
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #131313;
+    }
 
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #131313;
+      transition: background 0.2s;
+      width: 6px;
+    }
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+      transition: background 0.2s;
+    }
+  }
 
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+  :root {
+    --radius: 0.5rem;
   }
 }
 
@@ -71,7 +92,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-secondary text-white;
+    @apply bg-secondary text-text;
   }
 }
 
@@ -79,26 +100,5 @@
 body,
 html {
   height: 100%;
-}
-/* width */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #131313;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #131313;
-  transition: background 0.2s;
-  width: 6px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-  transition: background 0.2s;
+  overflow-y: auto;
 }

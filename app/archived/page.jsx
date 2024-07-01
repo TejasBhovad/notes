@@ -17,11 +17,11 @@ const page = () => {
           <Link
             key={subject.id}
             href={`/${subject.slug}`}
-            className="h-24 bg-white/5 hover:bg-white/10 transition-all ease-in-out duration-300 px-5 rounded-md shadow-md w-full flex items-center justify-between"
+            className="h-24 bg-util hover:bg-border transition-all ease-in-out duration-300 px-5 rounded-md shadow-md w-full flex items-center justify-between"
           >
             <div className="w-full flex flex-row justify-between items-center">
               <span className="text-xl font-semibold">{subject.name}</span>
-              <span className="text-sm text-gray-500">View</span>
+              <span className="text-sm text-textMuted">View</span>
             </div>
           </Link>
         ))}

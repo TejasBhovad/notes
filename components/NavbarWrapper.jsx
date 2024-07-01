@@ -1,5 +1,6 @@
 "use client";
 import posthog from "posthog-js";
+import ThemeSwitcher from "./ThemeSwitcher";
 import Profile from "@/components/auth/Profile";
 import SignIn from "@/components/auth/SignIn";
 import { getUserByEmail } from "@/src/queries";
@@ -40,7 +41,12 @@ const NavbarWrapper = ({ children }) => {
   }, [user]);
 
   return (
-    <div className="w-full h-full flex flex-col bg-base rounded-2xl">
+    <div
+      className="w-full h-full flex flex-col bg-base rounded-2xl"
+      style={{
+        height: "100%",
+      }}
+    >
       {/* if isMobile render mobile nav else nav */}
       {isMobile ? (
         <MobileNavbar session={session} status={status} user={user} />
@@ -73,10 +79,11 @@ function Navbar({ session, status, user }) {
       <div className="flex gap-3">
         <Link
           href="https://tejasbhovad.github.io/docs/"
-          className="w-auto px-4 h-full flex items-center justify-center bg-secondary text-white/85 font-semibold rounded-md hover:bg-white/5 hover:text-white/100 transition-all duration-200 ease-in-out border-[1.5px] border-white/10"
+          className="w-auto px-4 h-full flex items-center justify-center bg-secondary text-text/85 font-semibold rounded-md hover:util hover:text-text/100 transition-all duration-200 ease-in-out border-[1.5px] border-border"
         >
           &lt;docs&gt;
         </Link>
+        <ThemeSwitcher />
         {status === "loading" && <span>Loading...</span>}
         {session && status === "authenticated" && (
           <>

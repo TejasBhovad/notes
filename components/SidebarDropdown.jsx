@@ -26,7 +26,7 @@ const SidebarDropdown = ({ name, id, subject_slug }) => {
       open={isOpen}
       onOpenChange={setIsOpen}
     >
-      <div className="w-full text-left text-xs pl-1 font-semibold uppercase text-white/50 flex gap-2 items-center">
+      <div className="w-full text-left text-xs pl-1 font-semibold uppercase text-text flex gap-2 items-center">
         <Link
           href={`/${subject_slug}`}
           className="w-full h-full flex items-center"
@@ -81,7 +81,7 @@ const SidebarDropdown = ({ name, id, subject_slug }) => {
         </AnimatePresence>
       </CollapsibleContent>
       {name === "Curriculum" && (
-        <div className="my-0 border-b border-white/10 w-full"></div>
+        <div className="my-0 border-b border-border w-full"></div>
       )}
     </Collapsible>
   );

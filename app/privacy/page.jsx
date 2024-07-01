@@ -2,7 +2,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="w-full h-fit flex flex-col gap-4 p-4">
+    <div className="w-full h-fit flex flex-col gap-4 p-4 overflow-y-auto text-wrap">
       <h1 className="text-2xl font-bold">Privacy Policy</h1>
       <p className="text-sm">Last updated: June 29, 2024</p>
       <p>

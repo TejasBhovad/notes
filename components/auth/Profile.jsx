@@ -18,7 +18,7 @@ const Profile = ({ image, name, role = "student", isMobile = false }) => {
           className={`flex h-full ${
             isMobile
               ? "w-14 flex items-center justify-center"
-              : "w-40 bg-white/10 px-2 py-1"
+              : "w-40 bg-util px-2 py-1"
           }  rounded-md items-center`}
         >
           <div className="h-full aspect-square rounded-full">
@@ -35,17 +35,17 @@ const Profile = ({ image, name, role = "student", isMobile = false }) => {
               <span className="text-start font-medium text-xs w-full overflow-hidden">
                 {name}
               </span>
-              <span className="text-start text-xs text-gray-300 w-full">
+              <span className="text-start text-xs text-textMuted w-full">
                 {role}
               </span>
             </div>
           )}
         </div>
       </PopoverTrigger>
-      <PopoverContent className="text-sm bg-secondary text-white border-white/15 flex flex-col gap-2 w-auto">
+      <PopoverContent className="text-sm bg-secondary text-text border-border flex flex-col gap-2 w-auto">
         {role === "admin" && (
           <Link href="/upload">
-            <Button className="w-full px-8 text-left font-medium bg-base border-[1.5px] border-white/5 hover:bg-white/5 flex gap-2 justify-start">
+            <Button className="w-full px-8 text-left font-medium bg-base border-[1.5px] border-border hover:bg-util flex gap-2 justify-start">
               <Upload />
               Upload
             </Button>
@@ -53,7 +53,7 @@ const Profile = ({ image, name, role = "student", isMobile = false }) => {
         )}
         {role === "admin" && (
           <Link href="/manage">
-            <Button className="w-full px-8 text-left font-medium bg-base border-[1.5px] border-white/5 hover:bg-white/5 flex gap-2 justify-start">
+            <Button className="w-full px-8 text-left font-medium bg-base border-[1.5px] border-border hover:bg-utility flex gap-2 justify-start">
               <Manage />
               Manage
             </Button>

@@ -39,7 +39,7 @@ const LinkContainer = ({ role, name, url, id }) => {
 
   return (
     <motion.div
-      className="flex w-full  bg-secondary px-4 py-4 rounded-md border-[1.5px] border-white/10 ustify-center relative  hover:bg-base/25 transition-all"
+      className="flex w-full  bg-secondary px-4 py-4 rounded-md border-[1.5px] border-border justify-center relative  hover:bg-base/25 transition-all"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
@@ -55,7 +55,7 @@ const LinkContainer = ({ role, name, url, id }) => {
       {role === "admin" && (
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <div className="z-10 aspect-square bg-red-500/50 text-white h-6 rounded-md cursor-pointer flex items-center justify-center">
+            <div className="z-10 aspect-square bg-danger text-white h-6 rounded-md cursor-pointer flex items-center justify-center">
               ✕
             </div>
           </AlertDialogTrigger>
@@ -70,7 +70,7 @@ const LinkContainer = ({ role, name, url, id }) => {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className="border-white/10 focus-0">
+              <AlertDialogCancel className="border-border focus-0">
                 Cancel
               </AlertDialogCancel>
               <AlertDialogAction onClick={handleDelete}>

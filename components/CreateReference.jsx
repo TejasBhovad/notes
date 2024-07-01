@@ -87,7 +87,7 @@ const CreateReference = ({ subject_id, subjectName, user_id, user }) => {
       open={isDialogOpen}
       onOpenChange={(isOpen) => setIsDialogOpen(isOpen)}
     >
-      <DialogTrigger className="py-4 rounded-md border-2 border-white/15 bg-white/5">
+      <DialogTrigger className="py-4 rounded-md border-2 border-border bg-util">
         Add reference
       </DialogTrigger>
       <DialogContent>
@@ -98,21 +98,21 @@ const CreateReference = ({ subject_id, subjectName, user_id, user }) => {
               {subjectName.replace(/-/g, " ")}
             </span>
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-textMuted">
             References are urls to videos or links to educational content
           </DialogDescription>
         </DialogHeader>
         <Input
           label="Title"
           placeholder="Title of the reference"
-          className="w-full border-white/15"
+          className="w-full border-border"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <Input
           label="URL"
           placeholder="URL of the reference"
-          className="w-full border-white/15"
+          className="w-full border-border"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
         />

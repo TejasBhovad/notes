@@ -79,7 +79,7 @@ const NotesContainer = ({
   }
   return (
     <motion.div
-      className="p-4 bg-white/5 shadow-md text-lg font-medium rounded-md flex items-center justify-between"
+      className="p-4 bg-util shadow-md text-lg font-medium rounded-md flex items-center justify-between"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
@@ -92,7 +92,7 @@ const NotesContainer = ({
           <Doc size={27} />
           <p>{name}</p>
         </div>
-        <span className="text-white/25 text-xs text-left justify-start flex w-full">
+        <span className="text-textMuted text-xs text-left justify-start flex w-full">
           Created{" "}
           {formatDistance(new Date(created_at), new Date(), {
             addSuffix: true,
@@ -101,7 +101,7 @@ const NotesContainer = ({
       </div>
       <button
         onClick={() => downloadFile(url)}
-        className="h-8 aspect-square p-1 rounded-md bg-white/5 hover:bg-white/10 border-[1.5px] border-white/10 hover:border-white/20 transition-colors flex items-center justify-center"
+        className="h-8 aspect-square p-1 rounded-md bg-util/50 hover:bg-util border-[1.5px] border-border/50 hover:border-border transition-colors flex items-center justify-center"
       >
         <Download />
       </button>

@@ -4,7 +4,7 @@ import Link from "next/link";
 const FolderCard = ({ folder_slug, name, subject_slug }) => {
   return (
     <Link
-      className="cursor-pointer w-full bg-base flex py-1 px-2 gap-2 font-medium text-md rounded-md items-center text-white/85 hover:bg-white/5 hover:text-white/100 transition-all duration-200 ease-in-out"
+      className="cursor-pointer w-full bg-base flex py-1 px-2 gap-2 font-medium text-md rounded-md items-center text-text hover:util hover:text-border transition-all duration-200 ease-in-out"
       href={`/${subject_slug}/${folder_slug}`}
     >
       <Folder />

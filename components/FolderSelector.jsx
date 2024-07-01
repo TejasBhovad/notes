@@ -108,7 +108,7 @@ const FolderSelector = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="md:w-[200px] w-1/2 justify-between border-[1.5px] border-white/10 hover:bg-white/5 hover:text-white"
+          className="md:w-[200px] w-1/2 justify-between border-[1.5px] border-border hover:bg-util hover:text-text bg-util text-text"
           onClick={() => setOpen((prev) => !prev)}
         >
           {value
@@ -133,7 +133,7 @@ const FolderSelector = ({
               />
               <Button
                 onClick={createnewFolder}
-                className="w-full bg-primary/30 hover:bg-primary/40 text-white hover:text-white/90"
+                className="w-full bg-primary/30 hover:bg-primary/40 text-text hover:text-text/90"
               >
                 Add
               </Button>
