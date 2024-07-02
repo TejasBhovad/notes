@@ -10,7 +10,7 @@ const SidebarWrapper = ({ children }) => {
   return (
     <div className="sidebar-wrapper w-full min-h-screen bg-base">
       <Sidebar />
-      <main className="w-full h-screen min-h-full flex flex-col sm:pl-48">
+      <main className="w-full h-screen min-h-full flex flex-col sm:pl-52">
         <motion.div
           className="w-full bg-secondary h-full min-h-full"
           variants={{
@@ -48,7 +48,7 @@ function Sidebar() {
   const isSmallScreen = useMediaQuery("(max-width: 640px)");
   return (
     <motion.nav
-      className="sm:flex hidden z-10 w-48 h-full flex-1 absolute bg-secondary py-2 px-4 gap-8 flex-col gap-2"
+      className="sm:flex hidden z-10 w-52 h-full flex-1 absolute bg-secondary py-2 px-4 gap-8 flex-col gap-2"
       variants={{
         hidden: { x: -196 },
         visible: { x: 0 },

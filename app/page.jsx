@@ -38,12 +38,18 @@ const page = () => {
             <Link
               key={subject.id}
               href={`/${subject.slug}`}
-              className="h-24 bg-util/50 hover:bg-border/50 transition-all ease-in-out duration-300 px-5 rounded-md shadow-md w-full flex items-center justify-between"
+              className="h-24 bg-util hover:bg-border/50 transition-all ease-in-out duration-300 px-5 rounded-md shadow-md w-full flex items-center justify-between"
             >
-              <div className="w-full flex flex-row justify-between items-center">
-                <span className="text-xl font-semibold">{subject.name}</span>
-                <span className="text-xs text-textMuted flex capitalize gap-1">
-                  <span className="hidden sm:flex">Updated </span>
+              <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
+                <span className="text-xl font-semibold ">{subject.name}</span>
+                <span className="flex sm:hidden text-sm gap-1 text-textMuted">
+                  <span className="">Updated </span>
+                  {formatDistance(new Date(subject.last_updated), new Date(), {
+                    addSuffix: true,
+                  })}
+                </span>
+                <span className="text-xs text-textMuted capitalize gap-1 hidden sm:flex">
+                  <span className="">Updated </span>
                   {formatDistance(new Date(subject.last_updated), new Date(), {
                     addSuffix: true,
                   })}
@@ -63,7 +69,9 @@ const page = () => {
                 </span>
               </div>
 
-              <span className="text-sm text-textMuted">View</span>
+              <span className="text-sm text-textMuted hidden sm:flex">
+                View
+              </span>
             </div>
           </Link>
         </div>

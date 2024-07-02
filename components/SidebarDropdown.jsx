@@ -29,11 +29,11 @@ const SidebarDropdown = ({ name, id, subject_slug }) => {
       <div className="w-full text-left text-xs pl-1 font-semibold uppercase text-text flex gap-2 items-center">
         <Link
           href={`/${subject_slug}`}
-          className="w-full h-full flex items-center"
+          className="h-full flex items-center w-full truncate"
         >
           <span className="w-full text-nowrap">{name}</span>
         </Link>
-        <CollapsibleTrigger className="">
+        <CollapsibleTrigger className="h-full aspect-square">
           <motion.div
             animate={{
               rotate: isOpen ? 180 : 0,
