@@ -79,18 +79,22 @@ const NotesContainer = ({
   }
   return (
     <motion.div
-      className="p-4 bg-util shadow-md text-lg font-medium rounded-md flex items-center justify-between"
+      className="p-4 h-auto bg-util shadow-md text-lg font-medium rounded-md flex items-center justify-between"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
     >
       <div
-        className="items-center gap-3 w-full flex flex-col cursor-pointer"
+        className="items-center gap-3 w-[85%] h-full flex flex-col cursor-pointer"
         onClick={() => redirectTo(url)}
       >
         <div className="items-center gap-4 w-full flex">
-          <Doc size={27} />
-          <p>{name}</p>
+          <div className="h-full aspect-square">
+            <Doc size={27} />
+          </div>
+          <span className="w-full h-full truncate">
+            <p>{name}</p>
+          </span>
         </div>
         <span className="text-textMuted text-xs text-left justify-start flex w-full">
           Created{" "}
@@ -99,9 +103,10 @@ const NotesContainer = ({
           })}
         </span>
       </div>
+      {/* <div className="h-full aspect-square"> hello</div> */}
       <button
         onClick={() => downloadFile(url)}
-        className="h-8 aspect-square p-1 rounded-md bg-util/50 hover:bg-util border-[1.5px] border-border/50 hover:border-border transition-colors flex items-center justify-center"
+        className="h-full aspect-square p-1 rounded-md bg-base hover:bg-util border-[1.5px] border-border hover:border-border transition-colors flex items-center justify-center"
       >
         <Download />
       </button>
