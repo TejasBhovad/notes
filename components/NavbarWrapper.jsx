@@ -55,7 +55,7 @@ const NavbarWrapper = ({ children }) => {
       )}
       {/* <Navbar session={session} status={status} user={user} />
       <MobileNavbar session={session} status={status} user={user} /> */}
-      <main className="w-full h-full flex flex-col">{children}</main>
+      <main className="w-full h-full flex flex-col pb-10">{children}</main>
     </div>
   );
 };

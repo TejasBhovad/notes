@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import Link from "next/link";
 import SidebarWrapper from "@/components/SidebarWrapper";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
@@ -18,6 +19,21 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const Footer = () => {
+    return (
+      <footer className="sm:pl-52 z-60 absolute bottom-0 w-full font-semibold text-center text-text text-xs bg-util py-2 flex justify-center gap-1">
+        <span className="text-textMuted">
+          Not affiliated to dypatil university.
+        </span>
+        <span className="flex gap-1">
+          Made with ❤️ by
+          <Link href="https://github.com/TejasBhovad/notes">
+            <span className="hover:underline">Tejas</span>
+          </Link>
+        </span>
+      </footer>
+    );
+  };
   return (
     <AuthProvider>
       <ReactQueryClientProvider>
@@ -68,6 +84,7 @@ export default function RootLayout({ children }) {
                 <SidebarWrapper>{children}</SidebarWrapper>
               </ThemeProvider>
               <Toaster />
+              <Footer />
             </body>
           </CSPostHogProvider>
         </html>
