@@ -22,7 +22,7 @@ const SidebarDropdown = ({ name, id, subject_slug }) => {
   return (
     <Collapsible
       key={id}
-      className="w-full h-auto flex flex-col gap-2"
+      className="w-full h-auto flex flex-col gap-2 bg-util/15 rounded-sm p-1"
       open={isOpen}
       onOpenChange={setIsOpen}
     >
@@ -50,32 +50,40 @@ const SidebarDropdown = ({ name, id, subject_slug }) => {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.3 }}
+              initial="collapsed"
+              animate="open"
+              exit="collapsed"
+              className="gap-1 flex flex-col w-full overflow-hidden"
+              variants={{
+                open: { opacity: 1, height: "auto" },
+                collapsed: { opacity: 0, height: 0 },
+              }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              <ReferenceCard link={`/${subject_slug}/reference`} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-              className="flex flex-col gap-2"
-            >
-              {transformedFolders?.map((folder) => (
-                <FolderCard
-                  key={folder.id}
-                  folder_slug={folder.slug}
-                  name={folder.name}
-                  subject_slug={subject_slug}
-                />
-              ))}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ReferenceCard link={`/${subject_slug}/reference`} />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+                className="flex flex-col gap-2"
+              >
+                {transformedFolders?.map((folder) => (
+                  <FolderCard
+                    key={folder.id}
+                    folder_slug={folder.slug}
+                    name={folder.name}
+                    subject_slug={subject_slug}
+                  />
+                ))}
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
