@@ -76,6 +76,8 @@ const ManagePage = () => {
         </div>
         <div className="flex flex-col gap-2">
           {/* map over folders in subject */}
+
+          {deleteFolderMutation.isLoading && <span>Deleting...</span>}
           {transformedFoldersData &&
             transformedFoldersData.map((folder) => (
               <div className="w-full flex gap-2">
@@ -92,8 +94,16 @@ const ManagePage = () => {
                 </Button>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="outline" className="border-border">
-                      <Delete className="h-4 w-4" />
+                    <Button
+                      variant="outline"
+                      className="border-border"
+                      disabled={deleteFolderMutation.isLoading} // Pass loading state as prop
+                    >
+                      {deleteFolderMutation.isLoading ? (
+                        <span>Deleting...</span>
+                      ) : (
+                        <Delete className="h-4 w-4" />
+                      )}
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
@@ -110,15 +120,26 @@ const ManagePage = () => {
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={() => {
-                          deleteFolderMutation.mutate(folder.id);
-                          queryClient.invalidateQueries("folders");
-                          toast({
-                            title: "✅ Success",
-                            description: "Folder deleted successfully",
+                          deleteFolderMutation.mutate(folder.id, {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries("folders");
+                              toast({
+                                title: "✅ Success",
+                                description: "Folder deleted successfully",
+                              });
+                            },
+                            onError: () => {
+                              toast({
+                                title: "❌ Error",
+                                description: "Failed to delete the folder",
+                              });
+                            },
                           });
                         }}
                       >
-                        Continue
+                        {deleteFolderMutation.isLoading
+                          ? "Deleting..."
+                          : "Continue"}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
