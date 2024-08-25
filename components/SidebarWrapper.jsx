@@ -1,10 +1,11 @@
 "use client";
 import SidebarDropdown from "./SidebarDropdown";
-import { useFetchSubjects } from "@/data/subject";
 import NavbarWrapper from "@/components/NavbarWrapper";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "@/lib/media";
 import NotesButton from "@/components/NotesButton";
+import { NotesContext } from "@/providers/NotesContext";
+import { useContext } from "react";
 
 const SidebarWrapper = ({ children }) => {
   return (
@@ -30,19 +31,37 @@ const SidebarWrapper = ({ children }) => {
 };
 
 function Sidebar() {
-  const { data, isLoading, isError, error } = useFetchSubjects();
+  const {
+    data: notes,
+    isLoading: notesLoading,
+    isError: notesIsError,
+    error: notesError,
+  } = useContext(NotesContext);
+
+  // if (notesLoading) return <div>Loading...</div>;
+  // if (notesIsError) return <div>Error: {error.message}</div>;
   const transformedData =
-    data &&
-    data
-      .map((item) => ({
-        value: item.name.toLowerCase().replace(/\s/g, "-"),
-        label: item.name,
-        id: item.id,
-      }))
+    notes &&
+    notes
+      .map((item) => {
+        const transformedFolders = item.folders?.map((folder) => ({
+          name: folder.name,
+          slug: folder.name.toLowerCase().replace(/\s+/g, "-"),
+          id: folder.id,
+        }));
+
+        return {
+          name: item.subject.name,
+          slug: item.subject.name.toLowerCase().replace(/\s+/g, "-"),
+          id: item.subject.id,
+          last_updated: item.subject.updated_at,
+          folders: transformedFolders,
+        };
+      })
       .sort((a, b) => {
         // Move the "Curriculum" subject to the front of the array
-        if (a.label.toLowerCase() === "curriculum") return -1;
-        if (b.label.toLowerCase() === "curriculum") return 1;
+        if (a.name.toLowerCase() === "curriculum") return -1;
+        if (b.name.toLowerCase() === "curriculum") return 1;
         return 0;
       });
   const isSmallScreen = useMediaQuery("(max-width: 640px)");
@@ -63,12 +82,14 @@ function Sidebar() {
         {transformedData?.map((item) => (
           <SidebarDropdown
             key={item.id}
-            name={item.label}
+            name={item.name}
             id={item.id}
-            subject_slug={item.value}
+            subject_slug={item.slug}
+            folders={item.folders}
           />
         ))}
       </div>
+      {/* {JSON.stringify(transformedData)} */}
     </motion.nav>
   );
 }

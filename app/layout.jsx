@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 import SidebarWrapper from "@/components/SidebarWrapper";
 import "./globals.css";
+import { NotesProvider } from "@/providers/NotesContext";
 import { ThemeProvider } from "next-themes";
 import { Suspense } from "react";
 import PostHogPageView from "./PostHogPageView";
@@ -67,25 +68,27 @@ export default function RootLayout({ children }) {
           </head>
 
           <CSPostHogProvider>
-            <body className={inter.className}>
-              <Suspense fallback={null}>
-                <PostHogPageView />
-              </Suspense>
-              <NextSSRPlugin
-                /**
-                 * The `extractRouterConfig` will extract **only** the route configs
-                 * from the router to prevent additional information from being
-                 * leaked to the client. The data passed to the client is the same
-                 * as if you were to fetch `/api/uploadthing` directly.
-                 */
-                routerConfig={extractRouterConfig(ourFileRouter)}
-              />{" "}
-              <ThemeProvider>
-                <SidebarWrapper>{children}</SidebarWrapper>
-              </ThemeProvider>
-              <Toaster />
-              <Footer />
-            </body>
+            <NotesProvider>
+              <body className={inter.className}>
+                <Suspense fallback={null}>
+                  <PostHogPageView />
+                </Suspense>
+                <NextSSRPlugin
+                  /**
+                   * The `extractRouterConfig` will extract **only** the route configs
+                   * from the router to prevent additional information from being
+                   * leaked to the client. The data passed to the client is the same
+                   * as if you were to fetch `/api/uploadthing` directly.
+                   */
+                  routerConfig={extractRouterConfig(ourFileRouter)}
+                />
+                <ThemeProvider>
+                  <SidebarWrapper>{children}</SidebarWrapper>
+                </ThemeProvider>
+                <Toaster />
+                <Footer />
+              </body>
+            </NotesProvider>
           </CSPostHogProvider>
         </html>
       </ReactQueryClientProvider>
