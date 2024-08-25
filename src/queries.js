@@ -169,7 +169,7 @@ export const createReference = async ({
       url,
       user_id,
     });
-    updateSubjectLastUpdated(subject_id);
+    await updateSubjectLastUpdated(subject_id);
     return reference;
   } catch (error) {
     console.error(error);
@@ -186,7 +186,7 @@ export const createFolder = async ({ name, subject_id, user_id }) => {
       subject_id,
       user_id,
     });
-    updateSubjectLastUpdated(subject_id);
+    await updateSubjectLastUpdated(subject_id);
     return folder;
   } catch (error) {
     console.error(error);
@@ -211,7 +211,7 @@ export const createNote = async ({
       folder_id,
       include_global,
     });
-    updateFolderLastUpdated(folder_id);
+    await updateFolderLastUpdated(folder_id);
     return note;
   } catch (error) {
     console.error(error);
@@ -363,4 +363,30 @@ export const searchNotes = async (searchTerm) => {
     .where(ilike(notes.name, `%${searchTerm}%`))
     .orderBy(asc(notes.created_at));
   return notesList;
+};
+
+// get all references and notes of all subjects as a list like subject[references, notes]
+export const getAllReferencesAndNotes = async () => {
+  const subjectsList = await fetchSubjects();
+  const subjectsWithReferencesAndNotes = await Promise.all(
+    subjectsList.map(async (subject) => {
+      const [referencesList, foldersList] = await Promise.all([
+        fetchReferences(subject.id),
+        fetchFolders(subject.id),
+      ]);
+
+      const notesList = await Promise.all(
+        foldersList.map((folder) => fetchNotes(folder.id))
+      );
+
+      return {
+        subject,
+        references: referencesList,
+        notes: notesList.flat(),
+        folders: foldersList,
+      };
+    })
+  );
+
+  return subjectsWithReferencesAndNotes;
 };

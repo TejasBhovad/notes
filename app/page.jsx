@@ -6,21 +6,27 @@ import Time from "@/components/logo/Time";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Archive from "@/components/logo/Archive";
-import { useFetchSubjects } from "@/data/subject";
 import { useGetUserByEmail } from "@/data/user";
+import { NotesContext } from "@/providers/NotesContext";
+import { useContext } from "react";
+
 const page = () => {
+  const { data: notes, isLoading, isError, error } = useContext(NotesContext);
+
+  // if (isLoading) return <div>Loading...</div>;
+  // if (isError) return <div>Error: {error.message}</div>;
+
   const { data: session, status } = useSession();
-  const { data: subjects, error } = useFetchSubjects();
   const { data: user, error: userError } = useGetUserByEmail(
     session?.user?.email
   );
 
-  const formattedSubjects = subjects
+  const formattedSubjects = notes
     ?.map((subject) => ({
-      name: subject.name,
-      slug: subject.name.toLowerCase().replace(/\s+/g, "-"),
-      id: subject.id,
-      last_updated: subject.updated_at,
+      name: subject.subject.name,
+      slug: subject.subject.name.toLowerCase().replace(/\s+/g, "-"),
+      id: subject.subject.id,
+      last_updated: subject.subject.updated_at,
     }))
     .sort((a, b) => {
       // Move the "Curriculum" subject to the front of the array
@@ -28,7 +34,6 @@ const page = () => {
       if (b.name.toLowerCase() === "curriculum") return 1;
       return 0;
     });
-
   return (
     <div className="w-full h-[85vh] overflow-y-auto flex flex-col gap-8 p-4">
       <div className="w-full h-auto flex flex-col gap-2">
@@ -38,7 +43,7 @@ const page = () => {
             <Link
               key={subject.id}
               href={`/${subject.slug}`}
-              className="h-24 bg-util hover:bg-border/50 transition-all ease-in-out duration-300 px-5 rounded-md shadow-md w-full flex items-center justify-between"
+              className="h-24 bg-util hover:bg-border/75 transition-all ease-in-out duration-150 px-5 rounded-md shadow-md w-full flex items-center justify-between"
             >
               <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
                 <span className="text-xl font-semibold ">{subject.name}</span>
