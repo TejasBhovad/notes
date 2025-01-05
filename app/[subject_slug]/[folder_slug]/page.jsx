@@ -4,28 +4,54 @@ import React from "react";
 import { useState, useEffect } from "react";
 import NotesContainer from "@/components/NotesContainer";
 import { useFetchFolders } from "@/data/folder";
-import { useFetchSubjects } from "@/data/subject";
+import { useFetchSubjects, useFetchArchivedSubjects } from "@/data/subject";
 import { useFetchNotes } from "@/data/notes";
 import { useSession } from "next-auth/react";
 import { getUserByEmail } from "@/src/queries";
+
 const page = ({ params }) => {
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
+
+  // Fetch both regular and archived subjects
   const {
     data: subjects,
     isLoading: subjectLoading,
     error,
   } = useFetchSubjects();
+
+  const {
+    data: archivedSubjects,
+    isLoading: archivedSubjectLoading,
+    error: archivedError,
+  } = useFetchArchivedSubjects();
+
   const formattedSubjects = subjects?.map((subject) => ({
     name: subject.name,
     slug: subject.name.toLowerCase().replace(/\s+/g, "-"),
     id: subject.id,
+    isArchived: false,
   }));
-  const subject_id =
-    formattedSubjects &&
-    formattedSubjects.find((subject) => subject.slug === params.subject_slug)
-      ?.id;
+
+  const formattedArchivedSubjects = archivedSubjects?.map((subject) => ({
+    name: subject.name,
+    slug: subject.name.toLowerCase().replace(/\s+/g, "-"),
+    id: subject.id,
+    isArchived: true,
+  }));
+
+  // Find current subject in both regular and archived subjects
+  const currentSubject =
+    formattedSubjects?.find(
+      (subject) => subject.slug === params.subject_slug
+    ) ||
+    formattedArchivedSubjects?.find(
+      (subject) => subject.slug === params.subject_slug
+    );
+
+  const subject_id = currentSubject?.id;
+  const isArchived = currentSubject?.isArchived;
 
   const {
     data: folders,
@@ -57,11 +83,12 @@ const page = ({ params }) => {
     }
   }, [session]);
 
-  // if the current subject is not found, return a 404 page
+  // Check if subject exists in either regular or archived subjects
   if (
     !subjectLoading &&
+    !archivedSubjectLoading &&
     !isLoading &&
-    !formattedSubjects?.find((subject) => subject.slug === params.subject_slug)
+    !currentSubject
   ) {
     return (
       <Error
@@ -76,6 +103,7 @@ const page = ({ params }) => {
   // if the current folder is not found, return a 404 page
   if (
     !subjectLoading &&
+    !archivedSubjectLoading &&
     !isLoading &&
     !formattedFolders?.find((folder) => folder.slug === params.folder_slug)
   ) {
@@ -90,25 +118,45 @@ const page = ({ params }) => {
   }
 
   // if no notes, return a message
-  if (!notes && !notesLoading && !isLoading && !subjectLoading) {
+  if (
+    !notes &&
+    !notesLoading &&
+    !isLoading &&
+    !subjectLoading &&
+    !archivedSubjectLoading
+  ) {
     return (
       <div className="p-4 flex flex-col gap-6">
-        <h1 className="text-2xl font-semibold capitalize">
-          {params.folder_slug.replace(/_/g, " ")}
-        </h1>
-        <span>
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl font-semibold capitalize">
+            {params.folder_slug.replace(/_/g, " ")}
+          </h1>
+          {isArchived && (
+            <span className="uppercase text-sm font-semibold text-warning">
+              Archived Subject
+            </span>
+          )}
           <span className="uppercase text-sm font-semibold text-danger">
             No notes found
           </span>
-        </span>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="w-full h-[85vh] pb-6 overflow-y-auto px-4">
-      <div className="flex flex-col gap-4 ">
-        <h1 className="text-2xl font-semibold">{params.folder_slug}</h1>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl font-semibold capitalize">
+            {params.folder_slug}
+          </h1>
+          {isArchived && (
+            <span className="uppercase text-sm font-semibold text-warning">
+              Archived Subject
+            </span>
+          )}
+        </div>
         {notes?.map((note) => (
           <NotesContainer
             key={note.id}
@@ -117,21 +165,10 @@ const page = ({ params }) => {
             created_at={note.created_at}
             created_by={note.user_id}
             subject={params.subject_slug}
-            //  if user,id user_id=user.id else -1
             user_id={user ? user.id : -1}
+            isArchived={isArchived}
           />
         ))}
-        {/* {Array.from({ length: 10 }).map((_, index) => (
-          <NotesContainer
-            key={index}
-            name={`Note ${index + 1}`}
-            url={`#`}
-            created_at={new Date().toISOString()}
-            created_by={-1} // Assuming a placeholder value
-            subject={params.subject_slug}
-            user_id={user ? user.id : -1}
-          />
-        ))} */}
       </div>
     </div>
   );
