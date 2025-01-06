@@ -76,7 +76,6 @@ const SubjectSelector = ({
       });
       return;
     }
-    // console.log("creating reference", name, subject_id, type, url, user_id);
     createSubject.mutate(
       {
         name: newSubject,
@@ -85,7 +84,6 @@ const SubjectSelector = ({
       },
       {
         onSuccess: () => {
-          // find new subject from subjects and set it as selected
           const newSubject = subjects.find(
             (subject) => subject.value === newSubject
           );

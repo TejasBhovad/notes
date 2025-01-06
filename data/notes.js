@@ -27,7 +27,7 @@ export function useFetchNotes(folder_id) {
 
   return { data, isLoading, isError, error };
 }
-// create for delete
+
 export function useDeleteNoteMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({

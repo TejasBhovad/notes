@@ -12,7 +12,6 @@ import { useState } from "react";
 import { useFetchFolders } from "@/data/folder";
 const SidebarDropdown = ({ name, id, subject_slug, folders }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // const { data: folders, error: folderError } = useFetchFolders(id);
   const transformedFolders = folders?.map((folder) => ({
     name: folder.name,
     slug: folder.name.toLowerCase().replace(/\s+/g, "-"),

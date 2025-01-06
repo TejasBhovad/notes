@@ -37,9 +37,6 @@ function Sidebar() {
     isError: notesIsError,
     error: notesError,
   } = useContext(NotesContext);
-
-  // if (notesLoading) return <div>Loading...</div>;
-  // if (notesIsError) return <div>Error: {error.message}</div>;
   const transformedData =
     notes &&
     notes
@@ -59,7 +56,6 @@ function Sidebar() {
         };
       })
       .sort((a, b) => {
-        // Move the "Curriculum" subject to the front of the array
         if (a.name.toLowerCase() === "curriculum") return -1;
         if (b.name.toLowerCase() === "curriculum") return 1;
         return 0;
@@ -89,7 +85,6 @@ function Sidebar() {
           />
         ))}
       </div>
-      {/* {JSON.stringify(transformedData)} */}
     </motion.nav>
   );
 }

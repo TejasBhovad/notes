@@ -13,16 +13,6 @@ const PageSelector = () => {
   const router = useRouter();
 
   const [page, setPage] = useState("explore");
-  // //   based on page push to different pages
-  // useEffect(() => {
-  //   if (page === "explore") {
-  //     router.push("/");
-  //   } else if (page === "archived") {
-  //     router.push("/archived");
-  //   } else if (page === "upload") {
-  //     router.push("/upload");
-  //   }
-  // }, [page]);
   function handlePageChange(page) {
     setPage(page);
     if (page === "explore") {
@@ -51,7 +41,6 @@ const PageSelector = () => {
         <SelectItem value="archived">Archived</SelectItem>
         <SelectItem value="docs">&lt;docs&gt;</SelectItem>
         <ThemeSwitcher isMobile={true} />
-        {/* <SelectItem value="upload">Upload</SelectItem> */}
       </SelectContent>
     </Select>
   );

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { createUser } from "@/src/queries";
 import { useQuery } from "@tanstack/react-query";
-import { fetchAllUsers } from "@/src/queries"; // Adjust the import path as necessary
+import { fetchAllUsers } from "@/src/queries";
 import {
   fetchFoldersByUser,
   fetchReferencesByUser,

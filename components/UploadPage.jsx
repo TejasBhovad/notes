@@ -104,7 +104,6 @@ const UploadPage = ({ session, user }) => {
     setUrl("");
   }
 
-  // when files come in chnage name
   useEffect(() => {
     if (files.length > 0) {
       setName(files[0].name.replace(".pdf", ""));
@@ -135,8 +134,6 @@ const UploadPage = ({ session, user }) => {
         />
       </div>
 
-      {/* <span>{selectedSubjectId}</span>
-      <span>{selectedFolderId}</span> */}
       <div
         className={`w-full h-54 min-h-16 ${
           !selectedSubjectId || !selectedFolderId || files.length > 0
@@ -164,26 +161,21 @@ const UploadPage = ({ session, user }) => {
       </div>
 
       <div className="file list flex flex-col py-2">
-        {
-          files &&
-            files.map((file) => (
-              <Link
-                // open in new tab
-                target="_blank"
-                href={file.url}
-                key={file.id}
-                className="min-w-64 flex flex-col bg-primary/10 w-fit rounded-md px-4 py-2"
-              >
-                <span className="font-semibold">{file.name}</span>
-              </Link>
-            ))
-          // <span>{JSON.stringify(files)}</span>
-        }
+        {files &&
+          files.map((file) => (
+            <Link
+              target="_blank"
+              href={file.url}
+              key={file.id}
+              className="min-w-64 flex flex-col bg-primary/10 w-fit rounded-md px-4 py-2"
+            >
+              <span className="font-semibold">{file.name}</span>
+            </Link>
+          ))}
       </div>
       <div className="flex gap-1 text-center items-center justify-center">
         <span>Add </span>
         <span className="gap-1 flex font-medium text-primary/75">
-          {/* iterate thru file names */}
           {files.map((file) => (
             <span key={file.id}>{file.name}</span>
           ))}
@@ -203,7 +195,6 @@ const UploadPage = ({ session, user }) => {
           <span className="text-xs font-bold px-1 text-text/50">NAME</span>
           <Input
             type="text"
-            // default value to file name w.o pdf
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Name"

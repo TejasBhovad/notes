@@ -53,7 +53,7 @@ const NoteCard = ({ id, name, url }) => {
   }
 
   const clickDelete = (event) => {
-    event.stopPropagation(); // Prevent event from propagating to the dropdown menu
+    event.stopPropagation();
     setIsDeleteDialogOpen(true);
   };
 

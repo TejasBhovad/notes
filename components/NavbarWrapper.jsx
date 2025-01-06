@@ -47,14 +47,12 @@ const NavbarWrapper = ({ children }) => {
         height: "100%",
       }}
     >
-      {/* if isMobile render mobile nav else nav */}
       {isMobile ? (
         <MobileNavbar session={session} status={status} user={user} />
       ) : (
         <Navbar session={session} status={status} user={user} />
       )}
-      {/* <Navbar session={session} status={status} user={user} />
-      <MobileNavbar session={session} status={status} user={user} /> */}
+
       <main className="w-full h-full flex flex-col pb-10">{children}</main>
     </div>
   );

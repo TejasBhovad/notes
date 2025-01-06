@@ -38,8 +38,6 @@ const NotesContainer = ({
         const url = window.URL.createObjectURL(new Blob([blob]));
         const link = document.createElement("a");
         link.href = url;
-        // link.setAttribute("download", "file.pdf");
-        // download as the original file name.pdf
         link.setAttribute("download", `${name}.pdf`);
         document.body.appendChild(link);
         link.click();
@@ -103,7 +101,6 @@ const NotesContainer = ({
           })}
         </span>
       </div>
-      {/* <div className="h-full aspect-square"> hello</div> */}
       <button
         onClick={() => downloadFile(url)}
         className="h-full aspect-square p-1 rounded-md bg-base hover:bg-util border-[1.5px] border-border hover:border-border transition-colors flex items-center justify-center"

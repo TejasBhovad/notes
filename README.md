@@ -19,10 +19,6 @@ Simple WebApp to aggregate notes in one place
 
 > Project Docuementation: https://tejasbhovad.notion.site/Notes-Site-d7245491911a4859bbe2d31eb2a4dd23?pvs=4
 
-## Todo:
-
-[moved to project documentation]
-
 ## Steps to Run locally
 
 1. populate the `.env.example` files with own keys

@@ -7,7 +7,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn({ user }) {
       try {
         console.log("USER", user);
-        // Attempt to get the user by email
         const existingUser = await getUserByEmail(user.email);
         console.log("existingUser", existingUser);
         if (
@@ -23,7 +22,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             image: user.image,
           });
         }
-        // Return true to continue the sign-in process
         return true;
       } catch (error) {
         console.error("Error in signIn callback:", error);

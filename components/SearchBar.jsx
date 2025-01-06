@@ -54,7 +54,6 @@ const SearchBar = () => {
     return () => setIsMounted(false);
   }, []);
 
-  // when enter is pressed, navigate to the selected subject
   React.useEffect(() => {
     const down = (e) => {
       if (e.key === "Enter") {
@@ -88,7 +87,6 @@ const SearchBar = () => {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  // main search function
   const handleSearch = (value) => {
     setLoading(true);
     setLoadingNotes(true);

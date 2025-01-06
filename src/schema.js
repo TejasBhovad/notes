@@ -29,7 +29,7 @@ export const subjects = pgTable("subjects", {
   description: text("description"),
   created_by: integer("created_by").references(() => users.id, {
     onDelete: "no action",
-  }), // Added created_by field
+  }),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
 });
@@ -83,7 +83,7 @@ export const subjectsRelations = relations(subjects, ({ many, one }) => ({
   createdBy: one(users, {
     fields: [subjects.created_by],
     references: [users.id],
-  }), // Relation for created_by field
+  }),
 }));
 
 export const foldersRelations = relations(folders, ({ one, many }) => ({
@@ -100,7 +100,7 @@ export const referencesRelations = relations(references, ({ one }) => ({
     fields: [references.subject_id],
     references: [subjects.id],
   }),
-  // user can create multiple references
+
   user: one(users, { fields: [references.user_id], references: [users.id] }),
 }));
 
