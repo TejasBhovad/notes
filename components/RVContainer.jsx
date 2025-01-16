@@ -10,8 +10,8 @@ const RVContainer = ({ type, name, url, last_viewed }) => {
       <div className="h-full aspect-square flex items-center justify-center">
         <Doc size={40} />
       </div>
-      <div className="w-full h-full flex flex-col justify-center">
-        <span className="text-text font-semibold truncate">{name}</span>
+      <div className="w-full h-full flex flex-col justify-center overflow-hidden">
+        <span className="text-text font-semibold truncate w-full">{name}</span>
         <span className="text-textMuted text-sm truncate">
           viewed{" "}
           {formatDistance(new Date(last_viewed), new Date(), {

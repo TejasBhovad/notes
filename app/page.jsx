@@ -87,7 +87,7 @@ const page = () => {
           Recently Viewed
         </h1>
         {session && user && (
-          <div className="w-full h-fit flex flex-col sm:flex-row gap-2 overflow-x-auto">
+          <div className="w-full h-fit flex flex-col sm:flex-row gap-2 truncate">
             {/* {JSON.stringify(user[0].recently_viewed)} */}
             {/* map over ecently viewed */}
             {user[0].recently_viewed.map((item) => (
