@@ -82,6 +82,7 @@ export function useGetUserByEmail(email) {
     queryKey: ["user", email],
     queryFn: async () => await getUserByEmail(email),
     enabled: !!email,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   return { data, isLoading, isError, error };

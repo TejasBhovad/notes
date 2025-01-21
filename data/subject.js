@@ -28,6 +28,7 @@ export function useFetchSubjects() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["subjects"],
     queryFn: async () => await fetchSubjects(),
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   return { data, isLoading, isError, error };
@@ -37,6 +38,7 @@ export function useFetchArchivedSubjects() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["archived_subjects"],
     queryFn: async () => await fetchArchivedSubjects(),
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   return { data, isLoading, isError, error };

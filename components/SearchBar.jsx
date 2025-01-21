@@ -58,7 +58,7 @@ const SearchBar = () => {
     const down = (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        console.log("Enter Pressed", value);
+        // console.log("Enter Pressed", value);
         // Check if value is / to go to home page
         if (value === "/") {
           router.push("/");
@@ -90,7 +90,7 @@ const SearchBar = () => {
   const handleSearch = (value) => {
     setLoading(true);
     setLoadingNotes(true);
-    console.log("Search Operation", value);
+    // console.log("Search Operation", value);
     searchSubjects(value).then((data) => {
       setSubjectsData(data);
       setLoading(false);

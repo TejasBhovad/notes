@@ -88,8 +88,6 @@ const page = () => {
         </h1>
         {session && user && (
           <div className="w-full h-fit flex flex-col sm:flex-row gap-2 truncate">
-            {/* {JSON.stringify(user[0].recently_viewed)} */}
-            {/* map over ecently viewed */}
             {user[0].recently_viewed.map((item) => (
               <RVContainer
                 key={item.url}

@@ -23,6 +23,7 @@ export function useFetchReferences(subject_id) {
     queryKey: ["references", subject_id],
     queryFn: async () => await fetchReferences(subject_id),
     enabled: !!subject_id,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   return { data, isLoading, isError, error };

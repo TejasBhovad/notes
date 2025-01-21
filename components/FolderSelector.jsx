@@ -74,7 +74,7 @@ const FolderSelector = ({
       });
       return;
     }
-    console.log("creating folder", newFolder, selectedSubjectId, user_id);
+    // console.log("creating folder", newFolder, selectedSubjectId, user_id);
     createfolder.mutate(
       {
         name: newFolder,

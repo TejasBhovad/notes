@@ -58,7 +58,7 @@ const NotesContainer = ({
         },
         {
           onSuccess: () => {
-            console.log("updated recently viewed");
+            // console.log("updated recently viewed");
           },
           onError: () => {
             console.error("error updating recently viewed");

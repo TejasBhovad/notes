@@ -23,6 +23,7 @@ export function useFetchNotes(folder_id) {
     queryKey: ["notes", folder_id],
     queryFn: async () => await fetchNotes(folder_id),
     enabled: !!folder_id,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   return { data, isLoading, isError, error };
@@ -32,6 +33,7 @@ export function useDeleteNoteMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: deleteNote,
+
     onSuccess: (data) => {
       console.log("Note deleted successfully", data);
       queryClient.invalidateQueries({ queryKey: ["notes"] });

@@ -24,6 +24,7 @@ export function useFetchFolders(subject_id) {
     queryFn: async () => await fetchFolders(subject_id),
     enabled: !!subject_id,
     // dont prefetch`
+    staleTime: 1000 * 60 * 5, // 5 minutes
     prefetchQuery: false,
   });
 
