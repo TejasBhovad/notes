@@ -48,6 +48,7 @@ const UploadPage = ({ session, user }) => {
   const [files, setFiles] = useState([]);
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
+
   useEffect(() => {
     if (selectedSubjectId) {
       queryClient.invalidateQueries(["folders", selectedSubjectId]);
@@ -148,6 +149,10 @@ const UploadPage = ({ session, user }) => {
             onClientUploadComplete={(res) => {
               console.log("Files: ", res);
               setFiles([...files, ...res]);
+              toast({
+                title: "✅ Upload Complete",
+                description: `${res.length} file(s) uploaded successfully`,
+              });
             }}
             onUploadError={(error) => {
               toast({

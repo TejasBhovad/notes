@@ -67,12 +67,12 @@ const ManagePage = () => {
             setSelectedSubjectId={setSelectedSubjectId}
             subjects={transformedData}
           />
-          <SubjectFinder
+          {/* <SubjectFinder
             setSelectedSubject={setSelectedFolder}
             selectedSubject={selectedFolder}
             setSelectedSubjectId={setSelectedFolderId}
             subjects={transformedFoldersData}
-          />
+          /> */}
         </div>
         <div className="flex flex-col gap-2">
           {/* map over folders in subject */}

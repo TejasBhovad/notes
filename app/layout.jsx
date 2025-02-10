@@ -76,7 +76,7 @@ export default function RootLayout({ children }) {
                 <NextSSRPlugin
                   routerConfig={extractRouterConfig(ourFileRouter)}
                 />
-                <ThemeProvider>
+                <ThemeProvider defaultTheme="system" disableTransitionOnChange>
                   <SidebarWrapper>{children}</SidebarWrapper>
                 </ThemeProvider>
                 <Toaster />

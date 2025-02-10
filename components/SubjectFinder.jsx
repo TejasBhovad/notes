@@ -48,7 +48,7 @@ const SubjectFinder = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="md:w-[200px] w-1/2 justify-between border-[1.5px] border-border hover:bg-util hover:text-text"
+          className="md:w-auto w-1/2 overflow-hidden truncate justify-between border-[1.5px] border-border hover:bg-util hover:text-text"
           onClick={() => setOpen((prev) => !prev)}
         >
           {value

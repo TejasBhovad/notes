@@ -112,7 +112,7 @@ const page = ({ params }) => {
           className=""
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25, delay: 0.3 }}
+          transition={{ duration: 0.2, delay: 0.175 }}
         >
           <Link
             className="w-full flex gap-2 bg-util hover:bg-border transition-all items-center justify-start px-2 py-2 rounded-sm font-medium text-lg"
