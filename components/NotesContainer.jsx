@@ -1,5 +1,7 @@
 "use client";
-import React from "react";
+"use client";
+
+import React, { useCallback, memo } from "react";
 import { useUpdateRecentlyViewedMutation } from "@/data/user";
 import posthog from "posthog-js";
 import Download from "./logo/Download";
@@ -8,107 +10,142 @@ import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { formatDistance } from "date-fns";
-const NotesContainer = ({
-  name,
-  url,
-  created_by,
-  subject,
-  created_at,
-  user_id,
-}) => {
-  const item = {
-    type: "note",
-    url: url,
-    name: name,
-    last_viewed: new Date(),
-  };
-  const updateRecentlyViewed = useUpdateRecentlyViewedMutation();
-  const router = useRouter();
-  const { toast } = useToast();
-  function downloadFile(url) {
-    posthog.capture("downloaded_file", {
-      url: url,
-      subject: subject,
-      created_by: created_by,
-      name: name,
-    });
-    fetch(url)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const url = window.URL.createObjectURL(new Blob([blob]));
+
+const NotesContainer = memo(
+  ({ name, url, created_by, subject, created_at, user_id }) => {
+    const item = {
+      type: "note",
+      url,
+      name,
+      last_viewed: new Date(),
+    };
+
+    const updateRecentlyViewed = useUpdateRecentlyViewedMutation();
+    const router = useRouter();
+    const { toast } = useToast();
+
+    const trackEvent = useCallback(
+      (eventName) => {
+        posthog.capture(eventName, {
+          url,
+          subject,
+          created_by,
+          name,
+        });
+      },
+      [url, subject, created_by, name]
+    );
+
+    const handleDownload = async () => {
+      try {
+        trackEvent("downloaded_file");
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
-        link.href = url;
+        link.href = downloadUrl;
         link.setAttribute("download", `${name}.pdf`);
         document.body.appendChild(link);
         link.click();
-        link.parentNode.removeChild(link);
-      });
-    toast({
-      title: "Success",
-      description: "File downloaded successfully",
-    });
-  }
 
-  function redirectTo(url) {
-    if (user_id && user_id !== -1) {
-      updateRecentlyViewed.mutate(
-        {
-          user_id: user_id,
-          recentlyViewed: item,
-        },
-        {
-          onSuccess: () => {
-            // console.log("updated recently viewed");
-          },
-          onError: () => {
-            console.error("error updating recently viewed");
-          },
-        }
-      );
-    }
+        // Cleanup
+        link.parentNode?.removeChild(link);
+        window.URL.revokeObjectURL(downloadUrl);
 
-    router.push(url);
-    posthog.capture("viewed_file", {
-      url: url,
-      subject: subject,
-      created_by: created_by,
-      name: name,
+        toast({
+          title: "Success",
+          description: "File downloaded successfully",
+          variant: "default",
+        });
+      } catch (error) {
+        console.error("Download failed:", error);
+        toast({
+          title: "Error",
+          description: "Failed to download file. Please try again.",
+          variant: "destructive",
+        });
+      }
+    };
+
+    const handleRedirect = useCallback(() => {
+      if (user_id && user_id !== -1) {
+        updateRecentlyViewed.mutate(
+          {
+            user_id,
+            recentlyViewed: item,
+          },
+          {
+            onError: (error) => {
+              console.error("Error updating recently viewed:", error);
+              toast({
+                title: "Warning",
+                description: "Failed to update recently viewed items",
+                variant: "warning",
+              });
+            },
+          }
+        );
+      }
+
+      trackEvent("viewed_file");
+      router.push(url);
+    }, [user_id, item, updateRecentlyViewed, trackEvent, router, url, toast]);
+
+    const formattedDate = formatDistance(new Date(created_at), new Date(), {
+      addSuffix: true,
     });
-  }
-  return (
-    <motion.div
-      className="p-4 h-auto bg-util shadow-md text-lg font-medium rounded-md flex items-center justify-between"
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25 }}
-    >
-      <div
-        className="items-center gap-3 w-[85%] h-full flex flex-col cursor-pointer"
-        onClick={() => redirectTo(url)}
+
+    return (
+      <motion.div
+        className="p-4 h-auto bg-util shadow-md text-lg font-medium rounded-md flex items-center justify-between"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25 }}
+        role="article"
       >
-        <div className="items-center gap-4 w-full flex">
-          <div className="h-full aspect-square">
-            <Doc size={27} />
+        <div
+          className="items-center gap-3 w-[85%] h-full flex flex-col cursor-pointer"
+          onClick={handleRedirect}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleRedirect();
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label={`View note: ${name}`}
+        >
+          <div className="items-center gap-4 w-full flex">
+            <div className="h-full aspect-square" aria-hidden="true">
+              <Doc size={27} />
+            </div>
+            <span className="w-full h-full truncate">
+              <p>{name}</p>
+            </span>
           </div>
-          <span className="w-full h-full truncate">
-            <p>{name}</p>
+          <span className="text-textMuted text-xs text-left justify-start flex w-full">
+            Created {formattedDate}
           </span>
         </div>
-        <span className="text-textMuted text-xs text-left justify-start flex w-full">
-          Created{" "}
-          {formatDistance(new Date(created_at), new Date(), {
-            addSuffix: true,
-          })}
-        </span>
-      </div>
-      <button
-        onClick={() => downloadFile(url)}
-        className="h-full aspect-square p-1 rounded-md bg-base hover:bg-util border-[1.5px] border-border hover:border-border transition-colors flex items-center justify-center"
-      >
-        <Download />
-      </button>
-    </motion.div>
-  );
-};
+        <button
+          onClick={handleDownload}
+          className="h-full aspect-square p-1 rounded-md bg-base hover:bg-util border-[1.5px] border-border hover:border-border transition-colors flex items-center justify-center"
+          aria-label={`Download ${name}`}
+          title="Download file"
+        >
+          <Download aria-hidden="true" />
+        </button>
+      </motion.div>
+    );
+  }
+);
+
+NotesContainer.displayName = "NotesContainer";
 
 export default NotesContainer;

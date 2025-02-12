@@ -59,7 +59,7 @@ const SubjectsPage = () => {
                 <Link
                   key={subject.id}
                   href={`/${subject.slug}`}
-                  className="h-24 bg-util hover:bg-border/75 transition-all ease-in-out duration-150 px-5 rounded-md shadow-md w-full flex items-center justify-between"
+                  className="h-24 bg-util hover:bg-border/75 transition-all  ease-in-out duration-150 px-5 rounded-md shadow-md w-full flex items-center justify-between"
                 >
                   <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
                     <span className="text-xl font-semibold">

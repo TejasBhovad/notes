@@ -3,7 +3,8 @@ import Link from "next/link";
 import { formatDistance } from "date-fns";
 import { motion } from "framer-motion";
 import Pin from "@/components/logo/Pin";
-import Folder from "@/components/logo/Folder";
+// import Folder from "@/components/logo/Folder";
+import { Folder } from "lucide-react";
 import { useFetchSubjects, useFetchArchivedSubjects } from "@/data/subject";
 import Error from "@/app/Error";
 import { useFetchFolders } from "@/data/folder";
@@ -135,8 +136,12 @@ const page = ({ params }) => {
               className="w-full flex gap-2 bg-util hover:bg-border transition-all items-center justify-between px-2 py-2 rounded-sm font-medium text-lg"
               href={`/${params.subject_slug}/${folder.slug}`}
             >
-              <div className="w-auto flex gap-2 capitalize">
-                <Folder dim={27} />
+              <div className="w-auto flex gap-2 h-full items-center capitalize">
+                <Folder
+                  size={20}
+                  className="text-text/85"
+                  fill="currentColor"
+                />
                 <li>{folder.name}</li>
               </div>
 
