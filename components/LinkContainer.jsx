@@ -39,7 +39,7 @@ const LinkContainer = ({ role, name, url, id }) => {
 
   return (
     <motion.div
-      className="flex w-full  bg-secondary px-4 py-4 rounded-md border-[1.5px] border-border justify-center relative  hover:bg-base/25 transition-all"
+      className="flex w-full bg-secondary  rounded-md border-[1.5px] border-border justify-center relative  hover:bg-base/25 transition-all"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
@@ -48,15 +48,17 @@ const LinkContainer = ({ role, name, url, id }) => {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-full h-auto flex flex-col"
+        className="w-full px-2 py-2 h-auto flex flex-col items-center justify-center"
       >
         <span className="overflow-x-auto font-semibold">{name}</span>
       </Link>
       {role === "admin" && (
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <div className="z-10 aspect-square bg-danger text-white h-6 rounded-md cursor-pointer flex items-center justify-center">
-              ✕
+            <div className="w-fit h-full flex items-center justify-center px-2">
+              <div className="z-10 aspect-square bg-danger text-white h-6 rounded-md cursor-pointer flex items-center justify-center">
+                ✕
+              </div>
             </div>
           </AlertDialogTrigger>
           <AlertDialogContent>
