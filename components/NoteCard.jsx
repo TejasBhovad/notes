@@ -82,16 +82,26 @@ const NoteCard = ({ id, name, url }) => {
           <DropdownMenuTrigger className="hover:bg-util rounded-full p-[1.75px] flex justify-end">
             <Options />
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent className="bg-secondary border-[1.5px] border-border rounded-lg">
             <DropdownMenuLabel>Editing {name}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className="hover:bg-util cursor-pointer">
               <Link href={url} target="_blank">
                 Open in browser
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={downloadPDF}>Download</DropdownMenuItem>
-            <DropdownMenuItem onClick={clickDelete}>Delete</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={downloadPDF}
+              className="hover:bg-util cursor-pointer"
+            >
+              Download
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={clickDelete}
+              className="hover:bg-util cursor-pointer"
+            >
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -110,8 +120,8 @@ const NoteCard = ({ id, name, url }) => {
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
+                This action cannot be undone. This will permanently delete the
+                file named {name}. Are you sure you want to delete this file?
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

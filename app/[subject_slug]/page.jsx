@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { formatDistance } from "date-fns";
 import { motion } from "framer-motion";
-import Pin from "@/components/logo/Pin";
+import { Pin } from "lucide-react";
 // import Folder from "@/components/logo/Folder";
 import { Folder } from "lucide-react";
 import { useFetchSubjects, useFetchArchivedSubjects } from "@/data/subject";
@@ -90,7 +90,11 @@ const page = ({ params }) => {
           className="w-48 flex gap-2 bg-util hover:bg-border transition-all items-center justify-start px-2 py-2 rounded-sm font-medium text-lg"
           href={`/${params.subject_slug}/reference`}
         >
-          <Pin dim={27} />
+          <Pin
+            size={20}
+            className="text-text hover:text-text/100 transition-all duration-200 ease-in-out"
+            fill="currentColor"
+          />
           <span>References</span>
         </Link>
       </div>
@@ -119,7 +123,11 @@ const page = ({ params }) => {
             className="w-full flex gap-2 bg-util hover:bg-border transition-all items-center justify-start px-2 py-2 rounded-sm font-medium text-lg"
             href={`/${params.subject_slug}/reference`}
           >
-            <Pin dim={27} />
+            <Pin
+              size={20}
+              className="text-text hover:text-text/100 transition-all duration-200 ease-in-out"
+              fill="currentColor"
+            />
             <li>References</li>
           </Link>
         </motion.div>
