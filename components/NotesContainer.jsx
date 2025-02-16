@@ -38,8 +38,7 @@ const NotesContainer = memo(
 
     const handleDownload = async () => {
       try {
-        trackEvent("downloaded_file");
-
+        // First initiate the download
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -52,6 +51,9 @@ const NotesContainer = memo(
         link.setAttribute("download", `${name}.pdf`);
         document.body.appendChild(link);
         link.click();
+
+        // Track the event after download has started
+        trackEvent("downloaded_file");
 
         // Cleanup
         link.parentNode?.removeChild(link);
@@ -73,29 +75,35 @@ const NotesContainer = memo(
     };
 
     const handleRedirect = useCallback(() => {
-      if (user_id && user_id !== -1) {
-        updateRecentlyViewed.mutate(
-          {
-            user_id,
-            recentlyViewed: item,
-          },
-          {
-            onError: (error) => {
-              console.error("Error updating recently viewed:", error);
-              toast({
-                title: "Warning",
-                description: "Failed to update recently viewed items",
-                variant: "warning",
-              });
-            },
-          }
-        );
-      }
-
-      trackEvent("viewed_file");
+      // Start the navigation first
       router.push(url);
-    }, [user_id, item, updateRecentlyViewed, trackEvent, router, url, toast]);
 
+      // Then handle the tracking and recently viewed update in the background
+      setTimeout(() => {
+        // Track the event non-blockingly
+        trackEvent("viewed_file");
+
+        // Update recently viewed if applicable
+        if (user_id && user_id !== -1) {
+          updateRecentlyViewed.mutate(
+            {
+              user_id,
+              recentlyViewed: item,
+            },
+            {
+              onError: (error) => {
+                console.error("Error updating recently viewed:", error);
+                toast({
+                  title: "Warning",
+                  description: "Failed to update recently viewed items",
+                  variant: "warning",
+                });
+              },
+            }
+          );
+        }
+      }, 0);
+    }, [user_id, item, updateRecentlyViewed, trackEvent, router, url, toast]);
     const formattedDate = formatDistance(new Date(created_at), new Date(), {
       addSuffix: true,
     });
