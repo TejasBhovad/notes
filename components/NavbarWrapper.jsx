@@ -28,7 +28,7 @@ const LoadingSkeleton = ({ isMobile = false }) => (
             : "w-40 bg-util px-2 py-1"
         } rounded-md items-center`}
       >
-        <div className="h-9 w-9 bg-secondary rounded-full animate-pulse" />
+        <div className="h-full spect-square bg-secondary rounded-full animate-pulse" />
         {!isMobile && (
           <div className="flex flex-col gap-1 px-2 w-full">
             <div className="h-3 w-20 bg-secondary rounded animate-pulse" />

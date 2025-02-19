@@ -1,6 +1,6 @@
 "use client";
 import Error from "@/app/Error";
-import React from "react";
+import React, { use } from "react";
 import { useState, useEffect } from "react";
 import NotesContainer from "@/components/NotesContainer";
 import { useFetchFolders } from "@/data/folder";
@@ -9,7 +9,8 @@ import { useFetchNotes } from "@/data/notes";
 import { useSession } from "next-auth/react";
 import { getUserByEmail } from "@/src/queries";
 
-const page = ({ params }) => {
+const page = props => {
+  const params = use(props.params);
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
@@ -91,12 +92,12 @@ const page = ({ params }) => {
     !currentSubject
   ) {
     return (
-      <Error
+      (<Error
         message={`The subject ${params.subject_slug.replace(
           /_/g,
           " "
         )} does not exist`}
-      />
+      />)
     );
   }
 
@@ -108,12 +109,12 @@ const page = ({ params }) => {
     !formattedFolders?.find((folder) => folder.slug === params.folder_slug)
   ) {
     return (
-      <Error
+      (<Error
         message={`The folder ${params.folder_slug.replace(
           /_/g,
           " "
         )} does not exist`}
-      />
+      />)
     );
   }
 
@@ -126,7 +127,7 @@ const page = ({ params }) => {
     !archivedSubjectLoading
   ) {
     return (
-      <div className="p-4 flex flex-col gap-6">
+      (<div className="p-4 flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl font-semibold capitalize">
             {params.folder_slug.replace(/_/g, " ")}
@@ -140,7 +141,7 @@ const page = ({ params }) => {
             No notes found
           </span>
         </div>
-      </div>
+      </div>)
     );
   }
 

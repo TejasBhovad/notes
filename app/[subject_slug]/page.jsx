@@ -1,4 +1,5 @@
-"use client";
+"use client";;
+import { use } from "react";
 import Link from "next/link";
 import { formatDistance } from "date-fns";
 import { motion } from "framer-motion";
@@ -17,7 +18,8 @@ const LoadingFolder = () => (
   </div>
 );
 
-const SubjectPage = ({ params }) => {
+const SubjectPage = props => {
+  const params = use(props.params);
   const { data: subjects, isLoading: subjectsLoading } = useFetchSubjects();
   const { data: archivedSubjects, isLoading: archivedLoading } =
     useFetchArchivedSubjects();
@@ -75,12 +77,12 @@ const SubjectPage = ({ params }) => {
   // Check if subject exists
   if (!currentSubject) {
     return (
-      <Error
+      (<Error
         message={`The subject ${params.subject_slug.replace(
           /_/g,
           " "
         )} does not exist`}
-      />
+      />)
     );
   }
 

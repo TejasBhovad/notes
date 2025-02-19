@@ -1,6 +1,6 @@
 "use client";
 import Error from "@/app/Error";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import CreateReferences from "@/components/CreateReference";
 import LinkContainer from "@/components/LinkContainer";
 import ReferenceContainer from "@/components/ReferenceContainer";
@@ -9,7 +9,8 @@ import { useFetchReferences } from "@/data/reference";
 import { getUserByEmail } from "@/src/queries";
 import { useSession } from "next-auth/react";
 import { useQueryClient } from "@tanstack/react-query";
-const page = ({ params }) => {
+const page = props => {
+  const params = use(props.params);
   const queryClient = useQueryClient();
   const { data: session } = useSession();
   const [email, setEmail] = useState(session?.user?.email);
@@ -62,18 +63,18 @@ const page = ({ params }) => {
     !formattedSubjects?.find((subject) => subject.slug === params.subject_slug)
   ) {
     return (
-      <Error
+      (<Error
         message={`The subject ${params.subject_slug.replace(
           /_/g,
           " "
         )} does not exist`}
-      />
+      />)
     );
   }
   // if no references, return a message
   if (!references && !referenceLoading && !subjectLoading) {
     return (
-      <div className="p-4 flex flex-col gap-6">
+      (<div className="p-4 flex flex-col gap-6">
         <span>
           <h1 className="text-3xl font-semibold">References</h1>
           <span className="uppercase text-sm font-semibold text-textMuted">
@@ -85,12 +86,12 @@ const page = ({ params }) => {
             </h2>
           </span>
         </span>
-      </div>
+      </div>)
     );
   }
 
   return (
-    <div className="p-4 flex flex-col gap-6 h-[85vh] overflow-y-auto">
+    (<div className="p-4 flex flex-col gap-6 h-[85vh] overflow-y-auto">
       {formattedSubjects && (
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl font-semibold">References</h1>
@@ -144,7 +145,7 @@ const page = ({ params }) => {
           </div>
         </div>
       )}
-    </div>
+    </div>)
   );
 };
 
