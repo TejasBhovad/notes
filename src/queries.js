@@ -82,7 +82,7 @@ export const updateRecentlyViewed = async ({ user_id, recentlyViewed }) => {
     .from(users)
     .where(eq(users.id, userId))
     .execute();
-  console.log("user", user);
+  // console.log("user", user);
   if (!user || user.length === 0) {
     throw new Error("User not found");
   }
@@ -121,7 +121,7 @@ export const updateRecentlyViewed = async ({ user_id, recentlyViewed }) => {
 };
 
 export const getUserByEmail = async (email) => {
-  console.log("fetching user by email", email);
+  // console.log("fetching user by email", email);
   const user = await db
     .select()
     .from(users)

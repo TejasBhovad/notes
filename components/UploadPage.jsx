@@ -144,7 +144,7 @@ const UploadPage = ({ session, user }) => {
       >
         <div className="w-full h-full border border-border rounded-md border-dashed">
           <UploadDropzone
-            className="h-full w-full ut-button:bg-primary/75 ut-button:p-0 ut-button:text-sm ut-button:h-8 ut-label:text-primary/75 ut-label:text-sm ut-label:font-semibold ut-upload-icon:text-text/75 ut-button:ut-readying:bg-primary/50 ut-button:ut-uploading:bg-util/50 ut-button:ut-uploading::after:bg-util"
+            className="h-full w-full ut-button:bg-primary/75 ut-button:p-0 ut-button:text-sm ut-button:h-8 ut-label:text-primary/75 ut-label:text-sm ut-label:font-semibold ut-upload-icon:text-text/75 ut-button:ut-readying:bg-primary/50 ut-button:ut-uploading:bg-util/50 ut-button:ut-uploading::after:bg-util ut-bar"
             endpoint="pdfUploader"
             onClientUploadComplete={(res) => {
               console.log("Files: ", res);

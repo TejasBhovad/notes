@@ -15,7 +15,7 @@ export function useCreateUserMutation() {
   const mutation = useMutation({
     mutationFn: createUser,
     onSuccess: (data) => {
-      console.log("User created successfully", data);
+      // console.log("User created successfully", data);
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
     onError: (error) => {
@@ -66,7 +66,7 @@ export function useUpdateRecentlyViewedMutation() {
   const mutation = useMutation({
     mutationFn: updateRecentlyViewed,
     onSuccess: (data) => {
-      console.log("Recently viewed updated successfully", data);
+      // console.log("Recently viewed updated successfully", data);
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
     onError: (error) => {
