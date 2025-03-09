@@ -1,7 +1,6 @@
 "use client";
 import posthog from "posthog-js";
-import ThemeSwitcher from "./ThemeSwitcher";
-import Profile from "@/components/auth/Profile";
+import { useMemo, Suspense, lazy } from "react";
 import SignIn from "@/components/auth/SignIn";
 import { getUserByEmail } from "@/src/queries";
 import { useState, useEffect } from "react";
@@ -80,6 +79,24 @@ const NavbarWrapper = ({ children }) => {
     }
   }, [user]);
 
+  const memoizedNavbar = useMemo(() => {
+    return isMobile ? (
+      <MobileNavbar
+        session={session}
+        status={status}
+        user={user}
+        isLoading={isLoading}
+      />
+    ) : (
+      <Navbar
+        session={session}
+        status={status}
+        user={user}
+        isLoading={isLoading}
+      />
+    );
+  }, [isMobile, session, status, user, isLoading]);
+
   return (
     <div
       className="w-full h-full flex flex-col bg-base rounded-2xl"
@@ -87,24 +104,23 @@ const NavbarWrapper = ({ children }) => {
         height: "100%",
       }}
     >
-      {isMobile ? (
-        <MobileNavbar
-          session={session}
-          status={status}
-          user={user}
-          isLoading={isLoading}
-        />
-      ) : (
-        <Navbar
-          session={session}
-          status={status}
-          user={user}
-          isLoading={isLoading}
-        />
-      )}
+      {memoizedNavbar}
       <main className="w-full h-full flex flex-col pb-10">{children}</main>
     </div>
   );
+};
+
+const ThemeSwitcher = lazy(() => import("./ThemeSwitcher"));
+const Profile = lazy(() => import("@/components/auth/Profile"));
+
+const transition = {
+  duration: 0.35,
+  ease: "easeInOut",
+};
+
+const variants = {
+  hidden: { y: -60 },
+  visible: { y: 0 },
 };
 
 function Navbar({ session, status, user, isLoading }) {
@@ -113,13 +129,10 @@ function Navbar({ session, status, user, isLoading }) {
   return (
     <motion.nav
       className="hidden sm:flex h-14 w-full bg-transparent py-2 gap-3 px-3"
-      variants={{
-        hidden: { y: -60 },
-        visible: { y: 0 },
-      }}
+      variants={variants}
       initial="hidden"
       animate={isSmallScreen ? "hidden" : "visible"}
-      transition={{ duration: 0.35, ease: "easeInOut" }}
+      transition={transition}
     >
       <div className="w-full">
         <SearchBar />
@@ -131,17 +144,21 @@ function Navbar({ session, status, user, isLoading }) {
         >
           &lt;docs&gt;
         </Link>
-        <ThemeSwitcher />
+        <Suspense fallback={<div>Loading...</div>}>
+          <ThemeSwitcher />
+        </Suspense>
         {isLoading ? (
           <LoadingSkeleton />
         ) : (
           <>
             {session && status === "authenticated" && (
-              <Profile
-                name={session.user.name}
-                role={user?.role}
-                image={session?.user?.image}
-              />
+              <Suspense fallback={<div>Loading...</div>}>
+                <Profile
+                  name={session.user.name}
+                  role={user?.role}
+                  image={session?.user?.image}
+                />
+              </Suspense>
             )}
             {!session && status !== "loading" && <SignIn />}
           </>

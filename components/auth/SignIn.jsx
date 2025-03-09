@@ -1,11 +1,14 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 const SignIn = () => {
   // create async function to handle sign in
   const handleSignIn = async () => {
     // call signIn function from next-auth/react
-    await signIn("google", { callbackUrl: "/" });
+    await signIn("google", {
+      callbackUrl: "/",
+      redirect: true,
+      redirectTo: "/",
+    });
   };
   return (
     <Button
