@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const Profile = ({ image, name, role = "student", isMobile = false }) => {
+const Profile = ({ image, name, role = "user", isMobile = false }) => {
   const adminButtons = [
     { href: "/upload", icon: <Upload />, text: "Upload" },
     { href: "/manage", icon: <Manage />, text: "Manage" },
