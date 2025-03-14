@@ -6,7 +6,7 @@ import { useFetchSubjects } from "@/data/subject";
 import { useFetchFolders } from "@/data/folder";
 import { useState, useEffect } from "react";
 import { useCreateNoteMutation } from "@/data/notes";
-import { UploadDropzone } from "@uploadthing/react";
+import { UploadDropzone } from "@/src/utils/uploadthing";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -17,34 +17,45 @@ const UploadPage = ({ session, user }) => {
   const { toast } = useToast();
   const createNote = useCreateNoteMutation();
   const queryClient = useQueryClient();
-  const { data, isLoading, isError, error } = useFetchSubjects();
-  const transformedData =
-    data &&
-    data.map((item) => ({
-      value: item.name.toLowerCase().replace(/\s/g, "-"),
-      label: item.name,
-      id: item.id,
-    }));
   const [user_id, setUserId] = useState(user.id);
+
+  // Fetch subjects
+  const {
+    data: subjectsData,
+    isLoading,
+    isError,
+    error,
+  } = useFetchSubjects(user_id);
+
+  // Transform the subjects data only when it exists
+  const transformedData = Array.isArray(subjectsData)
+    ? subjectsData.map((item) => ({
+        value: item.name.toLowerCase().replace(/\s/g, "-"),
+        label: item.name,
+        id: item.id,
+      }))
+    : [];
+
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedSubjectId, setSelectedSubjectId] = useState("");
 
+  // Fetch folders based on selected subject
   const {
     data: folders,
     isLoading: folderIsLoading,
     isError: folderIsError,
   } = useFetchFolders(selectedSubjectId);
-  const transformedFoldersData =
-    folders &&
-    folders.map((item) => ({
-      value: item.name.toLowerCase().replace(/\s/g, "-"),
-      label: item.name,
-      id: item.id,
-    }));
+
+  const transformedFoldersData = Array.isArray(folders)
+    ? folders.map((item) => ({
+        value: item.name.toLowerCase().replace(/\s/g, "-"),
+        label: item.name,
+        id: item.id,
+      }))
+    : [];
 
   const [selectedFolder, setSelectedFolder] = useState("");
   const [selectedFolderId, setSelectedFolderId] = useState("");
-
   const [files, setFiles] = useState([]);
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
@@ -53,7 +64,14 @@ const UploadPage = ({ session, user }) => {
     if (selectedSubjectId) {
       queryClient.invalidateQueries(["folders", selectedSubjectId]);
     }
-  }, [selectedSubjectId]);
+  }, [selectedSubjectId, queryClient]);
+
+  useEffect(() => {
+    if (files.length > 0) {
+      setName(files[0].name.replace(".pdf", ""));
+      setUrl(files[0].url);
+    }
+  }, [files]);
 
   function createNewSubject() {
     if (!selectedSubjectId) {
@@ -72,7 +90,7 @@ const UploadPage = ({ session, user }) => {
       });
       return;
     }
-    if (!url) {
+    if (!url || files.length === 0) {
       toast({
         variant: "destructive",
         title: "🚧 Error",
@@ -80,37 +98,43 @@ const UploadPage = ({ session, user }) => {
       });
       return;
     }
-    if (files.length === 0) {
-      toast({
-        variant: "destructive",
-        title: "🚧 Error",
-        description: "Please upload a file first",
-      });
-      return;
-    }
-    console.log("creating note", name, user_id, selectedFolderId, url);
+
+    console.log("Creating note:", {
+      name,
+      url,
+      user_id,
+      folder_id: selectedFolderId,
+    });
+
     createNote.mutate({
       name: name,
       url: url,
       user_id: user_id,
       folder_id: selectedFolderId,
     });
+
     toast({
       title: "✅ Success",
       description: "Note created successfully",
     });
+
     updateSubjectLastUpdated(selectedSubjectId);
     setFiles([]);
     setName("");
     setUrl("");
   }
 
-  useEffect(() => {
-    if (files.length > 0) {
-      setName(files[0].name.replace(".pdf", ""));
-      setUrl(files[0].url);
-    }
-  }, [files]);
+  if (isLoading) {
+    return <div>Loading subjects...</div>;
+  }
+
+  if (isError) {
+    return (
+      <div className="text-red-500">
+        Error loading subjects: {error?.message || "Unknown error"}
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full flex flex-col p-4 gap-4">
@@ -135,6 +159,7 @@ const UploadPage = ({ session, user }) => {
         />
       </div>
 
+      {/* Rest of your component remains the same */}
       <div
         className={`w-full h-54 min-h-16 ${
           !selectedSubjectId || !selectedFolderId || files.length > 0

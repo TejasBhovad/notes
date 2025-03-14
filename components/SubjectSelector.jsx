@@ -36,27 +36,44 @@ const SubjectSelector = ({
   const [value, setValue] = React.useState(selectedSubject || "");
   const [newSubject, setNewSubject] = React.useState("");
   const [newDescription, setNewDescription] = React.useState("");
+  const [searchQuery, setSearchQuery] = React.useState("");
 
+  // Update value when selectedSubject changes from parent
   useEffect(() => {
     setValue(selectedSubject || "");
   }, [selectedSubject]);
 
+  // Ensure subjects is always an array
+  const safeSubjects = Array.isArray(subjects) ? subjects : [];
+
+  // Handle selection of a subject
   const handleSelect = (newValue) => {
+    // console.log("Subject selected:", newValue);
     setValue(newValue);
     setSelectedSubject(newValue);
-    setSelectedSubjectId(
-      subjects.find((subject) => subject.value === newValue)?.id
+
+    // Find the subject with the matching value
+    const selectedSubjectObj = safeSubjects.find(
+      (subject) => subject.value === newValue
     );
+    // console.log("Found subject:", selectedSubjectObj);
+
+    if (selectedSubjectObj) {
+      setSelectedSubjectId(selectedSubjectObj.id);
+    } else {
+      console.warn("Selected subject not found in subjects array");
+    }
     setOpen(false);
   };
 
+  // Create a new subject
   const createSubject = useCreateSubjectMutation();
   function createNewSubject() {
     if (user.role !== "admin") {
       toast({
         variant: "destructive",
         title: "🚧 Error",
-        description: "Friday, February 10, 2023 at 5:57 PM",
+        description: "Only administrators can create new subjects",
       });
       return;
     }
@@ -76,6 +93,13 @@ const SubjectSelector = ({
       });
       return;
     }
+
+    console.log("Creating new subject:", {
+      name: newSubject,
+      created_by: user_id,
+      description: newDescription,
+    });
+
     createSubject.mutate(
       {
         name: newSubject,
@@ -83,25 +107,39 @@ const SubjectSelector = ({
         description: newDescription,
       },
       {
-        onSuccess: () => {
-          const newSubject = subjects.find(
-            (subject) => subject.value === newSubject
-          );
-          if (newSubject) {
-            setValue(newSubject.value);
-            setSelectedSubject(newSubject.value);
-            setSelectedSubjectId(newSubject.id);
-          }
+        onSuccess: (data) => {
+          console.log("Subject created successfully:", data);
           toast({
             title: "✅ Success",
             description: "Subject created successfully",
           });
+
+          // After successful creation, we should find the new subject in the updated list
+          // But for now, we can use the created subject directly
           setNewSubject("");
           setNewDescription("");
+
+          // Note: You'll need to refresh the subjects list after creating a new subject
+          // This is typically handled by invalidating the React Query cache in the parent component
+        },
+        onError: (error) => {
+          console.error("Error creating subject:", error);
+          toast({
+            variant: "destructive",
+            title: "🚧 Error",
+            description: error.message || "Failed to create subject",
+          });
         },
       }
     );
   }
+
+  // Fix: Separate the button click from the Popover trigger
+  const handleButtonClick = (e) => {
+    e.preventDefault(); // Prevent default behavior
+    setOpen(!open);
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -110,23 +148,29 @@ const SubjectSelector = ({
           role="combobox"
           aria-expanded={open}
           className="md:w-[200px] w-1/2 justify-between border-[1.5px] border-border hover:bg-util hover:text-text"
-          onClick={() => setOpen((prev) => !prev)}
+          onClick={handleButtonClick}
         >
-          {value
-            ? subjects.find((subject) => subject.value === value)?.label
+          {value && safeSubjects.length > 0
+            ? safeSubjects.find((subject) => subject.value === value)?.label ||
+              "Select subject..."
             : "Select subject..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[200px] p-0 z-50">
+        {" "}
+        {/* Added higher z-index */}
         <Command>
           <CommandInput
             placeholder="Search subject..."
-            onValueChange={(value) => setNewSubject(value)}
+            value={searchQuery}
+            onValueChange={setSearchQuery}
+            autoFocus={true} // Add autofocus to improve usability
           />
           <CommandList>
+            {/* Simplified CommandEmpty condition */}
             <CommandEmpty className="w-full px-3 py-2 flex flex-col gap-2">
-              <span className="font-semibold text-sm"> Add a new subject</span>
+              <span className="font-semibold text-sm">Add a new subject</span>
               <Input
                 placeholder="Type a new subject..."
                 value={newSubject}
@@ -144,23 +188,36 @@ const SubjectSelector = ({
                 Add
               </Button>
             </CommandEmpty>
-            <CommandGroup>
-              {subjects &&
-                subjects.map((subject) => (
-                  <CommandItem
-                    key={subject.value}
-                    value={subject.value}
-                    onSelect={handleSelect}
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        value === subject.value ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                    {subject.label}
-                  </CommandItem>
-                ))}
+
+            <CommandGroup heading="Available subjects">
+              {safeSubjects && safeSubjects.length > 0 ? (
+                safeSubjects
+                  .filter(
+                    (subject) =>
+                      !searchQuery ||
+                      subject.label
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase())
+                  )
+                  .map((subject) => (
+                    <CommandItem
+                      key={subject.value}
+                      value={subject.value}
+                      onSelect={handleSelect}
+                      className="cursor-pointer"
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          value === subject.value ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                      {subject.label}
+                    </CommandItem>
+                  ))
+              ) : (
+                <CommandItem disabled>No subjects available</CommandItem>
+              )}
             </CommandGroup>
           </CommandList>
         </Command>
