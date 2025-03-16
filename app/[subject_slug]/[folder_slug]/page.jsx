@@ -1,7 +1,7 @@
 "use client";
 import Error from "@/app/Error";
 import React, { use } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import NotesContainer from "@/components/NotesContainer";
 import { useFetchFolders } from "@/data/folder";
 import { useFetchSubjects, useFetchArchivedSubjects } from "@/data/subject";
@@ -9,7 +9,7 @@ import { useFetchNotes } from "@/data/notes";
 import { useSession } from "next-auth/react";
 import { getUserByEmail } from "@/src/queries";
 
-const page = props => {
+const page = (props) => {
   const params = use(props.params);
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
@@ -84,6 +84,22 @@ const page = props => {
     }
   }, [session]);
 
+  // Memoize the NotesContainer components to prevent unnecessary re-renders
+  const memoizedNotes = useMemo(() => {
+    return notes?.map((note) => (
+      <NotesContainer
+        key={note.id}
+        name={note.name}
+        url={note.url}
+        created_at={note.created_at}
+        created_by={note.user_id}
+        subject={params.subject_slug}
+        user_id={user ? user.id : -1}
+        isArchived={isArchived}
+      />
+    ));
+  }, [notes, params.subject_slug, user, isArchived]);
+
   // Check if subject exists in either regular or archived subjects
   if (
     !subjectLoading &&
@@ -92,12 +108,12 @@ const page = props => {
     !currentSubject
   ) {
     return (
-      (<Error
+      <Error
         message={`The subject ${params.subject_slug.replace(
           /_/g,
           " "
         )} does not exist`}
-      />)
+      />
     );
   }
 
@@ -109,12 +125,12 @@ const page = props => {
     !formattedFolders?.find((folder) => folder.slug === params.folder_slug)
   ) {
     return (
-      (<Error
+      <Error
         message={`The folder ${params.folder_slug.replace(
           /_/g,
           " "
         )} does not exist`}
-      />)
+      />
     );
   }
 
@@ -127,7 +143,7 @@ const page = props => {
     !archivedSubjectLoading
   ) {
     return (
-      (<div className="p-4 flex flex-col gap-6">
+      <div className="p-4 flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl font-semibold capitalize">
             {params.folder_slug.replace(/_/g, " ")}
@@ -141,7 +157,7 @@ const page = props => {
             No notes found
           </span>
         </div>
-      </div>)
+      </div>
     );
   }
 
@@ -158,18 +174,7 @@ const page = props => {
             </span>
           )}
         </div>
-        {notes?.map((note) => (
-          <NotesContainer
-            key={note.id}
-            name={note.name}
-            url={note.url}
-            created_at={note.created_at}
-            created_by={note.user_id}
-            subject={params.subject_slug}
-            user_id={user ? user.id : -1}
-            isArchived={isArchived}
-          />
-        ))}
+        {memoizedNotes}
       </div>
     </div>
   );

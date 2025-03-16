@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { formatDistance } from "date-fns";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -41,6 +41,9 @@ const SubjectsPage = () => {
       if (b.name.toLowerCase() === "curriculum") return 1;
       return 0;
     });
+
+  const MemoizedArchive = useMemo(() => <Archive dim={27} />, []);
+  const MemoizedTime = useMemo(() => <Time dim={27} />, []);
 
   return (
     <div className="w-full h-[85vh] overflow-y-auto flex flex-col gap-8 p-4">
@@ -94,7 +97,7 @@ const SubjectsPage = () => {
               >
                 <div className="w-full flex flex-row justify-between items-center">
                   <div className="flex gap-2 items-center text-text">
-                    <Archive dim={27} />
+                    {MemoizedArchive}
                     <span className="text-xl font-semibold text-text">
                       Archived Subjects
                     </span>
@@ -111,7 +114,7 @@ const SubjectsPage = () => {
 
       <div className="w-full h-auto flex flex-col gap-3">
         <h1 className="text-2xl font-bold flex items-center gap-1">
-          <Time dim={27} />
+          {MemoizedTime}
           Recently Viewed
         </h1>
         {sessionStatus === "loading" || userLoading ? (

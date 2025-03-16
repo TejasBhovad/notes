@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, memo, useState } from "react";
+import React, { useCallback, memo, useState, useMemo } from "react";
 import { useUpdateRecentlyViewedMutation } from "@/data/user";
 import posthog from "posthog-js";
 import Download from "./logo/Download";
@@ -17,12 +17,26 @@ const NotesContainer = memo(
     const [isRedirecting, setIsRedirecting] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
 
-    const item = {
-      type: "note",
-      url,
-      name,
-      last_viewed: new Date(),
-    };
+    const loaderIcon = useMemo(
+      () => <Loader2 size={27} className="animate-spin" />,
+      []
+    );
+    const downloadLoader = useMemo(
+      () => <Loader2 className="animate-spin" />,
+      []
+    );
+
+    const memoizedDoc = useMemo(() => <Doc size={27} />, []);
+
+    const item = useMemo(
+      () => ({
+        type: "note",
+        url,
+        name,
+        last_viewed: new Date(),
+      }),
+      [url, name]
+    );
 
     const updateRecentlyViewed = useUpdateRecentlyViewedMutation();
     const router = useRouter();
@@ -40,7 +54,7 @@ const NotesContainer = memo(
       [url, subject, created_by, name]
     );
 
-    const handleDownload = async () => {
+    const handleDownload = useCallback(async () => {
       if (isDownloading) return; // Prevent multiple clicks
 
       setIsDownloading(true);
@@ -78,7 +92,7 @@ const NotesContainer = memo(
       } finally {
         setIsDownloading(false);
       }
-    };
+    }, [isDownloading, url, name, trackEvent, toast]);
 
     const handleRedirect = useCallback(() => {
       if (isRedirecting) return; // Prevent multiple clicks
@@ -119,6 +133,7 @@ const NotesContainer = memo(
         setIsRedirecting(false);
       }, 3000);
     }, [
+      isRedirecting,
       user_id,
       item,
       updateRecentlyViewed,
@@ -126,32 +141,60 @@ const NotesContainer = memo(
       router,
       url,
       toast,
-      isRedirecting,
     ]);
 
-    const formattedDate = formatDistance(new Date(created_at), new Date(), {
-      addSuffix: true,
-    });
+    const formattedDate = useMemo(
+      () =>
+        formatDistance(new Date(created_at), new Date(), {
+          addSuffix: true,
+        }),
+      [created_at]
+    );
 
+    const motionProps = useMemo(
+      () => ({
+        initial: { opacity: 0, y: 10 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.25 },
+      }),
+      []
+    );
+
+    const divClassName = useMemo(
+      () =>
+        `items-center gap-3 w-[85%] h-full flex flex-col ${
+          isRedirecting ? "cursor-wait opacity-70" : "cursor-pointer"
+        }`,
+      [isRedirecting]
+    );
+
+    const buttonClassName = useMemo(
+      () =>
+        `h-full aspect-square p-1 rounded-md bg-base hover:bg-util border-[1.5px] border-border hover:border-border transition-colors flex items-center justify-center ${
+          isDownloading ? "cursor-wait opacity-70" : ""
+        }`,
+      [isDownloading]
+    );
+    // Inline handler moved to useCallback
+    const handleKeyDown = useCallback(
+      (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleRedirect();
+        }
+      },
+      [handleRedirect]
+    );
     return (
       <motion.div
         className="p-4 h-auto bg-util shadow-md text-lg font-medium rounded-md flex items-center justify-between"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.25 }}
+        {...motionProps}
         role="article"
       >
         <div
-          className={`items-center gap-3 w-[85%] h-full flex flex-col ${
-            isRedirecting ? "cursor-wait opacity-70" : "cursor-pointer"
-          }`}
+          className={divClassName}
           onClick={handleRedirect}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              handleRedirect();
-            }
-          }}
+          onKeyDown={handleKeyDown}
           role="button"
           tabIndex={0}
           aria-label={`View note: ${name}`}
@@ -159,11 +202,7 @@ const NotesContainer = memo(
         >
           <div className="items-center gap-4 w-full flex">
             <div className="h-full aspect-square relative" aria-hidden="true">
-              {isRedirecting ? (
-                <Loader2 size={27} className="animate-spin" />
-              ) : (
-                <Doc size={27} />
-              )}
+              {isRedirecting ? loaderIcon : memoizedDoc}
             </div>
             <span className="w-full h-full truncate">
               <p>{name}</p>
@@ -175,18 +214,12 @@ const NotesContainer = memo(
         </div>
         <button
           onClick={handleDownload}
-          className={`h-full aspect-square p-1 rounded-md bg-base hover:bg-util border-[1.5px] border-border hover:border-border transition-colors flex items-center justify-center ${
-            isDownloading ? "cursor-wait opacity-70" : ""
-          }`}
+          className={buttonClassName}
           aria-label={`Download ${name}`}
           title={isDownloading ? "Downloading..." : "Download file"}
           disabled={isDownloading || isRedirecting}
         >
-          {isDownloading ? (
-            <Loader2 className="animate-spin" />
-          ) : (
-            <Download aria-hidden="true" />
-          )}
+          {isDownloading ? downloadLoader : <Download aria-hidden="true" />}
         </button>
       </motion.div>
     );
